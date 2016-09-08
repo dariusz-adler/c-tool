@@ -1,0 +1,63 @@
+{% extends 'errors/base.html' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        {% if info_message %}
+
+        {% endif %}
+
+        <table class="table table-striped">
+
+            <thead style='color: ghostwhite; background-color: cadetblue'>
+                <tr>
+                    <th>error id</th>
+                    <th>slogan</th>
+                    <th>issue id</th>
+                    <th>error code</th>
+                    <th>config id</th>
+                    <th>software label</th>
+                    <th>tc number</th>
+                    <th>suite</th>
+                    <th>script label</th>
+                    <th>date</th>
+                    <th>jenkins path</th>
+                    <th>test env</th>
+                    <th>fault area</th>
+                    <th>state</th>
+                    <th>comment</th>
+                    <th>env version</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for error in all_errors %}
+                <tr>
+                    <td>{{ error.id }}</td>
+                    <td>{{ error.slogan }}</td>
+                    <td>{{ error.issue_id }}</td>
+                    <td>{{ error.error_code }}</td>
+                    <td>{{ error.config_id }}</td>
+                    <td>{{ error.software_label }}</td>
+                    <td>{{ error.tc_number }}</td>
+                    <td>{{ error.suite }}</td>
+                    <td>{{ error.script_label }}</td>
+                    <td>{{ error.date }}</td>
+                    <td>{{ error.jenkins_path }}</td>
+                    <td>{{ error.test_environment }}</td>
+                    <td>{{ error.fault_area }}</td>
+                    <td>{{ error.state }}</td>
+                    <td>{{ error.comment }}</td>
+                    <td>{{ error.env_version }}</td>
+
+                    <td><a href="{% url 'error:detail' error.id %}" class="btn btn-default btn-md" role="button">Details</a></td>
+                    <td><button type="button" class="btn btn-primary"><a href="#"></a>Edit</button></td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

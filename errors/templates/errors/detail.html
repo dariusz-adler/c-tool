@@ -1,0 +1,24 @@
+{% extends 'errors/base.html' %}
+
+
+{% block body %}
+
+    <div class="container">
+        <div class="col-md-6" style="background-color: lightgray">
+        <h2>Details for error id: {{ error.id }}</h2>
+            {% for name, value in error.get_fields %}
+                {% if value %}
+                    {{ name }} : {{ value }} </br></br>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+
+
+
