@@ -4,6 +4,7 @@ from .models import Error
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
+
 def index(request):
     all_errors = Error.objects.all()
     context = {'all_errors': all_errors}
@@ -13,6 +14,12 @@ def index(request):
 def detail(request, error_id):
     error = Error.objects.get(pk=error_id)
     return render(request, 'errors/detail.html', {'error': error})
+
+
+def sorting(request, column):
+    sorted_errors = Error.objects.order_by(column)
+    context = {'all_errors': sorted_errors}
+    return render(request, 'errors/index.html', context)
 
 
 def add_error(request):
@@ -25,4 +32,3 @@ def add_error(request):
     else:
         form = ErrorForm()
     return render(request, 'errors/error_form.html', {'form': form})
-

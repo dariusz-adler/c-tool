@@ -3,7 +3,6 @@
 {% block body %}
 
     <div class="container-fluid">
-
         {% if info_message %}
 
         {% endif %}
@@ -12,22 +11,22 @@
 
             <thead style='color: ghostwhite; background-color: cadetblue'>
                 <tr>
-                    <th>error id</th>
-                    <th>slogan</th>
-                    <th>issue id</th>
-                    <th>error code</th>
-                    <th>config id</th>
-                    <th>software label</th>
-                    <th>tc number</th>
-                    <th>suite</th>
-                    <th>script label</th>
-                    <th>date</th>
-                    <th>jenkins path</th>
-                    <th>test env</th>
-                    <th>fault area</th>
-                    <th>state</th>
-                    <th>comment</th>
-                    <th>env version</th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'id' %}">error id</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'slogan' %}">slogan</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'issue_id' %}">issue id</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'error_code' %}">error code</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'config_id' %}">config id</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'software_label' %}">software label</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'tc_number' %}">tc number</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'suite' %}">suite</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'script_label' %}">script label</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'date' %}">date</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'jenkins_path' %}">jenkins path</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'test_environment' %}">test env</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'fault_area' %}">fault area</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'state' %}">state</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'comment' %}">comment</a></th>
+                    <th><a class="column_header" href="{% url 'error:sorting' 'env_version' %}">env version</a></th>
                 </tr>
             </thead>
             <tbody>
