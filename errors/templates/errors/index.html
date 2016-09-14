@@ -4,13 +4,23 @@
 
     <div class="container-fluid">
 
-        {% if info_message %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div class="col-md-offset-4 col-md-4" style="text-align: center;">
+                    <div class="alert alert-{{ message.tags }}">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: darkgreen;">  </span>
+                        {{ message }}
+                    </div>
+                </div>
 
+            {% endfor %}
+        </ul>
         {% endif %}
 
         <table class="table table-striped">
 
-            <thead style='color: ghostwhite; background-color: cadetblue'>
+            <thead style='color: ghostwhite; background-color: cadetblue;'>
                 <tr>
                     <th>error id</th>
                     <th>slogan</th>
@@ -28,6 +38,8 @@
                     <th>state</th>
                     <th>comment</th>
                     <th>env version</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -51,12 +63,32 @@
                     <td>{{ error.env_version }}</td>
 
                     <td><a href="{% url 'error:detail' error.id %}" class="btn btn-default btn-md" role="button">Details</a></td>
-                    <td><button type="button" class="btn btn-primary"><a href="#"></a>Edit</button></td>
+                    <td><a href="{% url 'error:update' error.id %}" class="btn btn-primary btn-md" role="button">
+                            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>  Edit
+                        </a>
+                    </td>
 
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+    <div class="col-md-offset-5 col-md-4">
+        <span class="step-links">
+            {% if all_errors.has_previous %}
+                <a href="?page={{ all_errors.previous_page_number }}"><span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span></a>
+            {% endif %}
+
+            <span class="current">
+                PAGE {{ all_errors.number }} of {{ all_errors.paginator.num_pages }}
+            </span>
+
+            {% if all_errors.has_next %}
+                <a href="?page={{ all_errors.next_page_number }}"><span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></a>
+            {% endif %}
+        </span>
+
+</div>
 
     </div>
 
