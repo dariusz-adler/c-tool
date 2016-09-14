@@ -7,7 +7,8 @@ from django.http import HttpResponseRedirect
 
 def index(request):
     all_errors = Error.objects.all()
-    context = {'all_errors': all_errors}
+    context = {'all_errors': all_errors,
+               'fields': Error().get_fields()}
     return render(request, 'errors/index.html', context)
 
 
@@ -16,9 +17,21 @@ def detail(request, error_id):
     return render(request, 'errors/detail.html', {'error': error})
 
 
-def sorting(request, column):
+def asc_sorting(request, column):
     sorted_errors = Error.objects.order_by(column)
-    context = {'all_errors': sorted_errors}
+    context = {'all_errors': sorted_errors,
+               'fields': Error().get_fields(),
+               'column': column,
+               'ordered': 'asc'}
+    return render(request, 'errors/index.html', context)
+
+
+def desc_sorting(request, column):
+    sorted_errors = Error.objects.order_by('-'+column)
+    context = {'all_errors': sorted_errors,
+               'fields': Error().get_fields(),
+               'column': column,
+               'ordered': 'desc'}
     return render(request, 'errors/index.html', context)
 
 

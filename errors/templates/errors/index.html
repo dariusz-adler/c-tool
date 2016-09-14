@@ -11,47 +11,27 @@
 
             <thead style='color: ghostwhite; background-color: cadetblue'>
                 <tr>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'id' %}">error id</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'slogan' %}">slogan</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'issue_id' %}">issue id</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'error_code' %}">error code</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'config_id' %}">config id</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'software_label' %}">software label</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'tc_number' %}">tc number</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'suite' %}">suite</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'script_label' %}">script label</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'date' %}">date</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'jenkins_path' %}">jenkins path</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'test_environment' %}">test env</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'fault_area' %}">fault area</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'state' %}">state</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'comment' %}">comment</a></th>
-                    <th><a class="column_header" href="{% url 'error:sorting' 'env_version' %}">env version</a></th>
+                    {% for field, _ in fields %}
+                        {% if field == column %}
+                            {% if ordered == 'asc' %}
+                                <th><a href="{% url 'error:desc_sorting' field %}">{{ field }} <i class="fa fa-sort-asc" aria-hidden="true"></i></a></th>
+                            {% else %}
+                                <th><a href="{% url 'error:asc_sorting' field %}">{{ field }} <i class="fa fa-sort-desc" aria-hidden="true"></i></a></th>
+                            {% endif %}
+                        {% else %}
+                            <th><a href="{% url 'error:asc_sorting' field %}">{{ field }} <i class="fa fa-sort" aria-hidden="true"></i></a></th>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             </thead>
             <tbody>
                 {% for error in all_errors %}
                 <tr>
-                    <td>{{ error.id }}</td>
-                    <td>{{ error.slogan }}</td>
-                    <td>{{ error.issue_id }}</td>
-                    <td>{{ error.error_code }}</td>
-                    <td>{{ error.config_id }}</td>
-                    <td>{{ error.software_label }}</td>
-                    <td>{{ error.tc_number }}</td>
-                    <td>{{ error.suite }}</td>
-                    <td>{{ error.script_label }}</td>
-                    <td>{{ error.date }}</td>
-                    <td>{{ error.jenkins_path }}</td>
-                    <td>{{ error.test_environment }}</td>
-                    <td>{{ error.fault_area }}</td>
-                    <td>{{ error.state }}</td>
-                    <td>{{ error.comment }}</td>
-                    <td>{{ error.env_version }}</td>
-
+                    {% for name, value in error.get_fields %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
                     <td><a href="{% url 'error:detail' error.id %}" class="btn btn-default btn-md" role="button">Details</a></td>
                     <td><button type="button" class="btn btn-primary"><a href="#"></a>Edit</button></td>
-
                 </tr>
                 {% endfor %}
             </tbody>
