@@ -29,6 +29,7 @@ def detail(request, error_id):
 
 def add_error(request):
     button_role = 'ADD'
+    window_role = 'ADD ERROR'
     if request.method == "POST":
         form = ErrorForm(request.POST)
         if form.is_valid():
@@ -38,11 +39,12 @@ def add_error(request):
             return HttpResponseRedirect(reverse('error:index'))
     else:
         form = ErrorForm()
-    return render(request, 'errors/error_form.html', {'form': form, 'button_role': button_role})
+    return render(request, 'errors/error_form.html', {'form': form, 'button_role': button_role, 'window_role': window_role})
 
 
 def update_error(request, error_id):
     button_role = 'UPDATE'
+    window_role = 'UPDATE ERROR'
     error = get_object_or_404(Error, id=error_id)
     form = ErrorForm(request.POST or None, instance=error)
     if form.is_valid():
@@ -54,6 +56,7 @@ def update_error(request, error_id):
     context = {
         'error': error,
         'form': form,
-        'button_role': button_role
+        'button_role': button_role,
+        'window_role': window_role,
     }
     return render(request, 'errors/error_form.html', context)
