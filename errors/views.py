@@ -17,14 +17,32 @@ def index(request):
         all_errors = paginator.page(1)
     except EmptyPage:
         all_errors = paginator.page(paginator.num_pages)
-    context = {'all_errors': all_errors}
-
+    context = {'all_errors': all_errors,
+               'fields': Error().get_fields()}
     return render(request, 'errors/index.html', context)
 
 
 def detail(request, error_id):
     error = Error.objects.get(pk=error_id)
     return render(request, 'errors/detail.html', {'error': error})
+
+
+def asc_sorting(request, column):
+    sorted_errors = Error.objects.order_by(column)
+    context = {'all_errors': sorted_errors,
+               'fields': Error().get_fields(),
+               'column': column,
+               'ordered': 'asc'}
+    return render(request, 'errors/index.html', context)
+
+
+def desc_sorting(request, column):
+    sorted_errors = Error.objects.order_by('-'+column)
+    context = {'all_errors': sorted_errors,
+               'fields': Error().get_fields(),
+               'column': column,
+               'ordered': 'desc'}
+    return render(request, 'errors/index.html', context)
 
 
 def add_error(request):

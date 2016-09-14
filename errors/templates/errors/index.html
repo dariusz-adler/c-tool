@@ -20,53 +20,29 @@
 
         <table class="table table-striped">
 
-            <thead style='color: ghostwhite; background-color: cadetblue;'>
+            <thead style='color: ghostwhite; background-color: cadetblue'>
                 <tr>
-                    <th>error id</th>
-                    <th>slogan</th>
-                    <th>issue id</th>
-                    <th>error code</th>
-                    <th>config id</th>
-                    <th>software label</th>
-                    <th>tc number</th>
-                    <th>suite</th>
-                    <th>script label</th>
-                    <th>date</th>
-                    <th>jenkins path</th>
-                    <th>test env</th>
-                    <th>fault area</th>
-                    <th>state</th>
-                    <th>comment</th>
-                    <th>env version</th>
-                    <th></th>
-                    <th></th>
+                    {% for field, _ in fields %}
+                        {% if field == column %}
+                            {% if ordered == 'asc' %}
+                                <th><a href="{% url 'error:desc_sorting' field %}">{{ field }} <i class="fa fa-sort-asc" aria-hidden="true"></i></a></th>
+                            {% else %}
+                                <th><a href="{% url 'error:asc_sorting' field %}">{{ field }} <i class="fa fa-sort-desc" aria-hidden="true"></i></a></th>
+                            {% endif %}
+                        {% else %}
+                            <th><a href="{% url 'error:asc_sorting' field %}">{{ field }} <i class="fa fa-sort" aria-hidden="true"></i></a></th>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             </thead>
             <tbody>
                 {% for error in all_errors %}
                 <tr>
-                    <td>{{ error.id }}</td>
-                    <td>{{ error.slogan }}</td>
-                    <td>{{ error.issue_id }}</td>
-                    <td>{{ error.error_code }}</td>
-                    <td>{{ error.config_id }}</td>
-                    <td>{{ error.software_label }}</td>
-                    <td>{{ error.tc_number }}</td>
-                    <td>{{ error.suite }}</td>
-                    <td>{{ error.script_label }}</td>
-                    <td>{{ error.date }}</td>
-                    <td>{{ error.jenkins_path }}</td>
-                    <td>{{ error.test_environment }}</td>
-                    <td>{{ error.fault_area }}</td>
-                    <td>{{ error.state }}</td>
-                    <td>{{ error.comment }}</td>
-                    <td>{{ error.env_version }}</td>
-
+                    {% for name, value in error.get_fields %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
                     <td><a href="{% url 'error:detail' error.id %}" class="btn btn-default btn-md" role="button">Details</a></td>
-                    <td><a href="{% url 'error:update' error.id %}" class="btn btn-primary btn-md" role="button">
-                            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>  Edit
-                        </a>
-                    </td>
+                    <td><button type="button" class="btn btn-primary"><a href="#"></a>Edit</button></td>
 
                 </tr>
                 {% endfor %}
