@@ -83,6 +83,8 @@ def add_error(request):
 
 
 def advanced_search(request):
+    window_role = "ADVANCED SEARCH"
+    button_role = 'SEARCH'
     if request.method == "POST":
         slogan = request.POST.get("slogan")
         issue_id = request.POST.get("issue_id")
@@ -105,7 +107,7 @@ def advanced_search(request):
         return query_result
     else:
         form = SearchForm()
-        return render(request, 'errors/advanced_search.html', {'form': form})
+        return render(request, 'errors/error_form.html', {'form': form, 'window_role': window_role, 'button_role': button_role})
 
 
 def dynamic_query(request, model, fields, values, operator):
@@ -120,23 +122,22 @@ def dynamic_query(request, model, fields, values, operator):
         for query in queries:
             print(query)
             if operator == "and":
-                print("55555555")
                 q = q & query
             elif operator == "or":
-                print("666666666")
                 q = q | query
             else:
-                print("000000000000")
                 q = None
         if q:
             print(q)
             print(model.objects.filter(q))
-            return render(request, 'errors/index.html', {'all_errors': model.objects.filter(q),})
+            context = {'all_errors': model.objects.filter(q),
+                       'fields': Error().get_fields()}
+            return render(request, 'errors/index.html', context)
     else:
         all_errors = model.objects.all()
-        return render(request, 'errors/index.html', {
-            'all_errors': {all_errors},
-        })
+        context = {'all_errors': all_errors,
+                   'fields': Error().get_fields()}
+        return render(request, 'errors/index.html', context)
 
 def update_error(request, error_id):
     button_role = 'UPDATE'
