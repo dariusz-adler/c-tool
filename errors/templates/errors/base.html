@@ -11,39 +11,40 @@
 </head>
 <body>
 
-    <div class="navbar navbar-inverse">
-        <div class="container">
+<div class="navbar navbar-inverse">
+    <div class="container">
 
-            <!-- logo -->
-            <div class="navbar-header">
-                <a href ='#' class="navbar-brand">C - TOOL</a>
-            </div>
-
-            <!-- menu items -->
-            <ul class="nav navbar-nav">
-
-                <li class="active"><a href="{% url 'error:index' %}">Latest</a></li>
-                <li class=""><a href="{% url 'error:add' %}">Add error</a></li>
-
-            </ul>
-
-            <!-- search -->
-            <form class="navbar-form navbar-left" role="search" method="get" action="#">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="q" value="">
-                </div>
-                <button type="submit" class="btn btn-default">Search</button>
-            </form>
-
-            <!-- right items -->
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#">Login</a>
-                </li>
-            </ul>
-
+        <!-- logo -->
+        <div class="navbar-header">
+            <a href='{% url 'error:index' %}' class="navbar-brand">C - TOOL</a>
         </div>
+
+        <!-- menu items -->
+        <ul class="nav navbar-nav">
+
+            <li class="active"><a href="{% url 'error:index' %}">Latest</a></li>
+            <li class=""><a href="{% url 'error:add' %}">Add error</a></li>
+
+        </ul>
+
+        <!-- search -->
+        <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'error:index' %}">
+            <div class="form-group">
+                <input type="text" class="form-control" name="q" value="">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+        <a class=" btn btn-info" href="{% url 'error:advanced_search' %}" >Advanced search</a>
+        </form>
+
+        <!-- right items -->
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="#">Login</a>
+            </li>
+        </ul>
+
     </div>
+</div>
 
 {% block body %}
 {% endblock %}

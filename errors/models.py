@@ -13,12 +13,12 @@ class Error(models.Model):
     date = models.DateField()
     jenkins_path = models.CharField(max_length=200)
 
-    test_environment = models.CharField(max_length=200, default='', choices= [('ufte','ufte'), ('hibiscus',
+    test_environment = models.CharField(max_length=200, default='', choices=[('ufte', 'ufte'), ('hibiscus',
                                                                                                 'hibiscus')])
-    fault_area = models.CharField(max_length=200, default='', choices= [('CI Fault', 'CI Fault'), ('Product Fault',
-                                                                                                   'Product Fault')])
-    state = models.CharField(max_length=200, default='', choices= [('in progress','in progress'), ('frozen', 'frozen'),
-                                                                   ('solved', 'solved')])
+    fault_area = models.CharField(max_length=200, default='', choices=[('CI Fault', 'CI Fault'), ('Product Fault',
+                                                                                                  'Product Fault')])
+    state = models.CharField(max_length=200, default='', choices=[('in progress', 'in progress'), ('frozen', 'frozen'),
+                                                                  ('solved', 'solved')])
 
     comment = models.CharField(max_length=1000)
     env_version = models.CharField(max_length=100)

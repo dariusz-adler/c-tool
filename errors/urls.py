@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^add/$', views.add_error, name='add'),
 
     #/update/error.id
-    url(r'^update/(?P<error_id>[0-9]+)/$', views.update_error, name='update')
+    url(r'^update/(?P<error_id>[0-9]+)/$', views.update_error, name='update'),
+    url(r'advanced_search/$', views.advanced_search, name='advanced_search'),
 ]

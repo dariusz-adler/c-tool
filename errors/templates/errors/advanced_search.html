@@ -1,0 +1,36 @@
+{% extends 'errors/base.html' %}
+{% block body %}
+
+<div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="panel panel-default">
+
+                    <div class="panel-body" style="background-color: lightgrey">
+
+                        <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% include 'errors/form-template.html' %}
+                            <div class="form-group">
+                                <div class="col-md-offset-10 col-md-2">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+{% endblock %}

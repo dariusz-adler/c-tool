@@ -1,10 +1,13 @@
 from .forms import ErrorForm
 from django.shortcuts import render, get_object_or_404
+from .forms import SearchForm
+from django.shortcuts import render
 from .models import Error
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 
 def index(request):
@@ -17,8 +20,27 @@ def index(request):
         all_errors = paginator.page(1)
     except EmptyPage:
         all_errors = paginator.page(paginator.num_pages)
-    context = {'all_errors': all_errors,
-               'fields': Error().get_fields()}
+    query = request.GET.get("q")
+    if query:
+        errors = all_errors_list.filter(
+            Q(slogan__exact=query) |
+            Q(issue_id__exact=query) |
+            Q(error_code__exact=query) |
+            Q(config_id__exact=query) |
+            Q(software_label__exact=query) |
+            Q(tc_number__exact=query) |
+            Q(suite__exact=query) |
+            Q(script_label__exact=query) |
+            Q(jenkins_path__exact=query) |
+            Q(test_environment__exact=query) |
+            Q(state__exact=query)
+        ).distinct()
+        context = {'all_errors': errors,
+                   'fields': Error().get_fields()}
+    else:
+        context = {'all_errors': all_errors,
+                   'fields': Error().get_fields()}
+
     return render(request, 'errors/index.html', context)
 
 
@@ -59,6 +81,62 @@ def add_error(request):
         form = ErrorForm()
     return render(request, 'errors/error_form.html', {'form': form, 'button_role': button_role, 'window_role': window_role})
 
+
+def advanced_search(request):
+    if request.method == "POST":
+        slogan = request.POST.get("slogan")
+        issue_id = request.POST.get("issue_id")
+        error_code = request.POST.get("error_code")
+        config_id = request.POST.get("config_id")
+        software_label = request.POST.get("software_label")
+        tc_number = request.POST.get("tc_number")
+        suite = request.POST.get("suite")
+        script_label = request.POST.get("script_label")
+        date = request.POST.get("date")
+        jenkins_path = request.POST.get("jenkins_path")
+        test_environment = request.POST.get("test_environment")
+        state = request.POST.get("state")
+
+        fields = ['slogan', 'issue_id', 'error_code', 'config_id', 'software_label', 'tc_number', 'suite',
+                  'script_label', 'date', 'jenkins_path', 'test_environment', 'state']
+        values = [slogan, issue_id, error_code, config_id, software_label, tc_number, suite, script_label, date,
+                  jenkins_path, test_environment, state]
+        query_result = dynamic_query(request, Error, fields, values, 'and')
+        return query_result
+    else:
+        form = SearchForm()
+        return render(request, 'errors/advanced_search.html', {'form': form})
+
+
+def dynamic_query(request, model, fields, values, operator):
+    queries = []
+    for (f, v) in zip(fields, values):
+        if v != "":
+            kwargs = {str('%s__exact' % (f)): str('%s' % v)}
+            queries.append(Q(**kwargs))
+    if len(queries) > 0:
+        print (queries)
+        q = Q()
+        for query in queries:
+            print(query)
+            if operator == "and":
+                print("55555555")
+                q = q & query
+            elif operator == "or":
+                print("666666666")
+                q = q | query
+            else:
+                print("000000000000")
+                q = None
+        if q:
+            print(q)
+            print(model.objects.filter(q))
+            return render(request, 'errors/index.html', {'all_errors': model.objects.filter(q),})
+    else:
+        all_errors = model.objects.all()
+        return render(request, 'errors/index.html', {
+            'all_errors': {all_errors},
+        })
 
 def update_error(request, error_id):
     button_role = 'UPDATE'
