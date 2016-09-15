@@ -42,7 +42,10 @@
                         <td>{{ value }}</td>
                     {% endfor %}
                     <td><a href="{% url 'error:detail' error.id %}" class="btn btn-default btn-md" role="button">Details</a></td>
-                    <td><button type="button" class="btn btn-primary"><a href="#"></a>Edit</button></td>
+                    <td><a href="{% url 'error:update' error.id %}" class="btn btn-primary btn-md" role="button">
+                            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>  Edit
+                        </a>
+                    </td>
 
                 </tr>
                 {% endfor %}
