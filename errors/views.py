@@ -48,6 +48,8 @@ def sorting(request, column, direction):
         sorted_errors = errors.order_by(column)
     elif direction == 'desc':
         sorted_errors = errors.order_by('-' + column)
+    else:
+        sorted_errors = errors
 
     paginator = Paginator(sorted_errors, 15)
     page = request.GET.get('page')
@@ -115,7 +117,7 @@ def dynamic_query(request, model, fields, values, operator):
     queries = []
     for (f, v) in zip(fields, values):
         if v != "":
-            kwargs = {str('%s__exact' % (f)): str('%s' % v)}
+            kwargs = {str('%s__exact' % f): str('%s' % v)}
             queries.append(Q(**kwargs))
     if len(queries) > 0:
         print(queries)
