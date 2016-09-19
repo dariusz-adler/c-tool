@@ -1,5 +1,5 @@
 from .forms import ErrorForm
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from .forms import SearchForm
 from django.shortcuts import render
 from .models import Error
@@ -41,21 +41,15 @@ def detail(request, error_id):
     return render(request, 'errors/detail.html', {'error': error})
 
 
-def asc_sorting(request, column):
-    sorted_errors = Error.objects.order_by(column)
+def sorting(request, column, direction):
+    if direction == 'asc':
+        sorted_errors = Error.objects.order_by(column)
+    elif direction == 'desc':
+        sorted_errors = Error.objects.order_by('-' + column)
     context = {'all_errors': sorted_errors,
                'fields': Error().get_fields(),
                'column': column,
-               'ordered': 'asc'}
-    return render(request, 'errors/index.html', context)
-
-
-def desc_sorting(request, column):
-    sorted_errors = Error.objects.order_by('-'+column)
-    context = {'all_errors': sorted_errors,
-               'fields': Error().get_fields(),
-               'column': column,
-               'ordered': 'desc'}
+               'direction': direction}
     return render(request, 'errors/index.html', context)
 
 
@@ -71,7 +65,8 @@ def add_error(request):
             return HttpResponseRedirect(reverse('error:index'))
     else:
         form = ErrorForm()
-    return render(request, 'errors/error_form.html', {'form': form, 'button_role': button_role, 'window_role': window_role})
+    return render(request, 'errors/error_form.html', {'form': form, 'button_role': button_role,
+                                                      'window_role': window_role})
 
 
 def advanced_search(request):
@@ -99,7 +94,8 @@ def advanced_search(request):
         return query_result
     else:
         form = SearchForm()
-        return render(request, 'errors/error_form.html', {'form': form, 'window_role': window_role, 'button_role': button_role})
+        return render(request, 'errors/error_form.html', {'form': form, 'window_role': window_role,
+                                                          'button_role': button_role})
 
 
 def dynamic_query(request, model, fields, values, operator):
@@ -109,6 +105,7 @@ def dynamic_query(request, model, fields, values, operator):
             kwargs = {str('%s__exact' % (f)): str('%s' % v)}
             queries.append(Q(**kwargs))
     if len(queries) > 0:
+        print(queries)
         q = Q()
         for query in queries:
             if operator == "and":
@@ -126,6 +123,7 @@ def dynamic_query(request, model, fields, values, operator):
         context = {'all_errors': all_errors,
                    'fields': Error().get_fields()}
         return render(request, 'errors/index.html', context)
+
 
 def update_error(request, error_id):
     button_role = 'UPDATE'
