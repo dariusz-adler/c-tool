@@ -24,11 +24,7 @@
                 <tr>
                     {% for field, _ in fields %}
                         {% if field == column %}
-                            {% if direction == 'asc' %}
-                                <th><a href="{% url 'error:sorting' field 'desc' %}">{{ field }} <i class="fa fa-sort-{{ direction }}"></i></a></th>
-                            {% elif direction == 'desc' %}
-                                <th><a href="{% url 'error:sorting' field 'asc' %}">{{ field }} <i class="fa fa-sort-{{ direction }}"></i></a></th>
-                            {% endif %}
+                            <th><a href="{% url 'error:sorting' field direction %}">{{ field }} <i class="{{ icon }}"></i></a></th>
                         {% else %}
                             <th><a href="{% url 'error:sorting' field 'asc' %}">{{ field }} <i class="fa fa-sort"></i></a></th>
                         {% endif %}

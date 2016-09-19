@@ -8,6 +8,24 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
+from django.core import serializers
+
+
+def post_errors_to_session(request, errors):
+    request.session['errors'] = serializers.serialize("json", errors)
+
+
+def get_errors_from_session(request):
+    if "errors" in request.session:
+        keys = []
+        for obj in serializers.deserialize("json", request.session['errors']):
+            keys.append(obj.object.pk)
+
+        errors = Error.objects.filter(pk__in=keys)
+    else:
+        errors = Error.objects.all()
+
+    return errors
 
 
 def index(request):
@@ -42,14 +60,21 @@ def detail(request, error_id):
 
 
 def sorting(request, column, direction):
-    errors = Error.objects.all()
+    errors = get_errors_from_session(request)
 
     if direction == 'asc':
         sorted_errors = errors.order_by(column)
+        direction = 'desc'
+        icon = 'fa fa-sort-asc'
     elif direction == 'desc':
         sorted_errors = errors.order_by('-' + column)
+        direction = 'asc'
+        icon = 'fa fa-sort-desc'
     else:
         sorted_errors = errors
+        icon = 'fa fa-sort'
+
+    post_errors_to_session(request, sorted_errors)
 
     paginator = Paginator(sorted_errors, 15)
     page = request.GET.get('page')
@@ -64,7 +89,9 @@ def sorting(request, column, direction):
     context = {'all_errors': sorted_errors,
                'fields': Error().get_fields(),
                'column': column,
-               'direction': direction}
+               'direction': direction,
+               'icon': icon}
+
     return render(request, 'errors/index.html', context)
 
 
