@@ -42,10 +42,23 @@ def detail(request, error_id):
 
 
 def sorting(request, column, direction):
+    errors = Error.objects.all()
+
     if direction == 'asc':
-        sorted_errors = Error.objects.order_by(column)
+        sorted_errors = errors.order_by(column)
     elif direction == 'desc':
-        sorted_errors = Error.objects.order_by('-' + column)
+        sorted_errors = errors.order_by('-' + column)
+
+    paginator = Paginator(sorted_errors, 15)
+    page = request.GET.get('page')
+
+    try:
+        sorted_errors = paginator.page(page)
+    except PageNotAnInteger:
+        sorted_errors = paginator.page(1)
+    except EmptyPage:
+        sorted_errors = paginator.page(paginator.num_pages)
+
     context = {'all_errors': sorted_errors,
                'fields': Error().get_fields(),
                'column': column,
