@@ -22,21 +22,13 @@ def index(request):
         all_errors = paginator.page(paginator.num_pages)
     query = request.GET.get("q")
     if query:
-        errors = all_errors_list.filter(
-            Q(slogan__exact=query) |
-            Q(issue_id__exact=query) |
-            Q(error_code__exact=query) |
-            Q(config_id__exact=query) |
-            Q(software_label__exact=query) |
-            Q(tc_number__exact=query) |
-            Q(suite__exact=query) |
-            Q(script_label__exact=query) |
-            Q(jenkins_path__exact=query) |
-            Q(test_environment__exact=query) |
-            Q(state__exact=query)
-        ).distinct()
-        context = {'all_errors': errors,
-                   'fields': Error().get_fields()}
+        fields = ['slogan', 'issue_id', 'error_code', 'config_id', 'software_label', 'tc_number', 'suite',
+                  'script_label', 'jenkins_path', 'test_environment', 'state']
+        values = []
+        for i in range(len(fields)):
+            values.append(query)
+        query_result = dynamic_query(request, Error, fields, values, 'or')
+        return query_result
     else:
         context = {'all_errors': all_errors,
                    'fields': Error().get_fields()}
@@ -117,10 +109,8 @@ def dynamic_query(request, model, fields, values, operator):
             kwargs = {str('%s__exact' % (f)): str('%s' % v)}
             queries.append(Q(**kwargs))
     if len(queries) > 0:
-        print (queries)
         q = Q()
         for query in queries:
-            print(query)
             if operator == "and":
                 q = q & query
             elif operator == "or":
@@ -128,8 +118,6 @@ def dynamic_query(request, model, fields, values, operator):
             else:
                 q = None
         if q:
-            print(q)
-            print(model.objects.filter(q))
             context = {'all_errors': model.objects.filter(q),
                        'fields': Error().get_fields()}
             return render(request, 'errors/index.html', context)
