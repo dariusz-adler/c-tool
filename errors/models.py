@@ -1,4 +1,5 @@
 from django.db import models
+import re
 
 
 class Error(models.Model):
@@ -46,3 +47,53 @@ class Error(models.Model):
                                                                   self.fault_area,
                                                                   self.state,
                                                                   self.env_version)
+
+    def parse_issue_id_to_url_address(self):
+        pattern = r'[a-zA-Z]{2}\d{5}'
+        matcher = re.match(pattern, self.issue_id)
+
+        if matcher:
+            self.issue_id = "https://mhweb.ericsson.se/TREditWeb/faces/oo/object.xhtml?eriref={}&mode=VIEW".format(self.issue_id)
+
+        pattern = r'[a-zA-Z]{3}-[a-zA-Z]{2}-\d{3}'
+        matcher = re.match(pattern, self.issue_id)
+
+        if matcher:
+            self.issue_id = "http://fht.lmera.ericsson.se/edit_report.php?report={}".format(self.issue_id)
+
+        pattern = r'EHLIGSM-\d+'
+        matcher = re.match(pattern, self.issue_id)
+
+        if matcher:
+            self.issue_id = "https://jira.lmera.ericsson.se/browse/{}".format(self.issue_id)
+
+        pattern = r'LSUMSSIM-\d+'
+        matcher = re.match(pattern, self.issue_id)
+
+        if matcher:
+            self.issue_id = "https://track.lineserver.net/browse/{}".format(self.issue_id)
+
+        pattern = r'(CYCLONE-\d+)?(XFTBEAVER-\d+)?(HIBISCUS-\d+)?(TWOGSIMCS-\d+)?'
+        matcher = re.match(pattern, self.issue_id)
+
+        if matcher:
+            self.issue_id = "https://wcdma-jira.rnd.ki.sw.ericsson.se/browse/{}".format(self.issue_id)
+
+    def parse_url_address_to_issue_id(self):
+        pattern = r'.*eriref=([A-Z]{2}\d{5})'
+        matcher = re.match(pattern, self.issue_id)
+
+        if matcher:
+            return matcher.group(1)
+
+        pattern = r'.*report=([a-zA-Z]{3}-[a-zA-Z]{2}-\d+)'
+        matcher = re.match(pattern, self.issue_id)
+
+        if matcher:
+            return matcher.group(1)
+
+        pattern = r'.*browse\/(.+)'
+        matcher = re.match(pattern, self.issue_id)
+
+        if matcher:
+            return matcher.group(1)

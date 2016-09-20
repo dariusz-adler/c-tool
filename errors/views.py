@@ -108,6 +108,7 @@ def add_error(request):
         form = ErrorForm(request.POST)
         if form.is_valid():
             error = form.save()
+            error.parse_issue_id_to_url_address()
             error.save()
             messages.success(request, 'Error has beed added with id: {}'.format(error.id))
             return HttpResponseRedirect(reverse('error:index'))
