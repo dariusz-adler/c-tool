@@ -1,5 +1,5 @@
 from .forms import ErrorForm
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from .forms import SearchForm
 from django.shortcuts import render
 from .models import Error
@@ -8,24 +8,11 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.core import serializers
-
-
-def post_errors_to_session(request, errors):
-    request.session['errors'] = serializers.serialize("json", errors)
-
-
-def get_errors_from_session(request):
-    if "errors" in request.session:
-        keys = []
-        for obj in serializers.deserialize("json", request.session['errors']):
-            keys.append(obj.object.pk)
-
-        errors = Error.objects.filter(pk__in=keys)
-    else:
-        errors = Error.objects.all()
-
-    return errors
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+from ctool import settings
 
 
 def index(request):
@@ -167,6 +154,7 @@ def dynamic_query(request, model, fields, values, operator):
         return render(request, 'errors/index.html', context)
 
 
+@login_required
 def update_error(request, error_id):
     button_role = 'UPDATE'
     window_role = 'UPDATE ERROR'
@@ -185,3 +173,27 @@ def update_error(request, error_id):
         'window_role': window_role,
     }
     return render(request, 'errors/error_form.html', context)
+
+
+def login_user(request):
+    next = request.GET.get('next', 'index/')
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                auth.login(request, user)
+                return HttpResponseRedirect(next)
+            else:
+                return render(request, 'errors/login.html', {'error_message': 'Your account has been disabled'})
+        else:
+            return render(request, 'errors/login.html', {'error_message': 'Invalid login'})
+    return render(request, "errors/login.html", {'redirect_to': next})
+
+
+def logout_user(request):
+    auth.logout(request)
+    return HttpResponseRedirect(settings.LOGIN_URL)
+
+

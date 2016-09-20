@@ -23,8 +23,9 @@
         <ul class="nav navbar-nav">
 
             <li class="active"><a href="{% url 'error:index' %}">Latest</a></li>
-            <li class=""><a href="{% url 'error:add' %}">Add error</a></li>
-
+            {% if user.is_authenticated %}
+                <li class=""><a href="{% url 'error:add' %}">Add error</a></li>
+            {% endif %}
         </ul>
 
         <!-- search -->
@@ -39,7 +40,11 @@
         <!-- right items -->
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a href="#">Login</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'error:logout_user' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'error:login_user' %}">Login</a>
+                {% endif %}
             </li>
         </ul>
 
