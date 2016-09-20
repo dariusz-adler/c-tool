@@ -7,3 +7,12 @@ th a:hover{
     color: white;
     font-size: 13px;
 }
+
+.table-hover tbody tr:hover td {
+    background: #eeeeee;
+}
+
+.hiddenRow {
+    padding: 0 !important;
+    border: 0 !important;
+}

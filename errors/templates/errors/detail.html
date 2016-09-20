@@ -17,7 +17,11 @@
                     <div class="form-group">
                         {% for name, value in error.get_fields %}
                             {% if value %}
-                                {{ name }} : {{ value }} </br></br>
+                                {% if name == 'issue_id' %}
+                                    {{ name }} : <a href="{{ value }}">{{ value }}</a> </br></br>
+                                {% else %}
+                                    {{ name }} : {{ value }} </br></br>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     </div>

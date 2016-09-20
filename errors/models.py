@@ -26,14 +26,14 @@ class Error(models.Model):
                              choices=[('in progress', 'in progress'), ('frozen', 'frozen'), ('solved', 'solved')],
                              null=False)
 
-    comment = models.TextField(max_length=500)
+    comment = models.TextField(max_length=1000)
     env_version = models.CharField(max_length=100)
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Error._meta.fields]
 
     def __str__(self):
-        return '{} {} {} {} {} {} {} {} {} {} {} {} {} {}'.format(self.issue_id,
+        return '{} {} {} {} {} {} {} {} {} {} {} {} {} {}'.format(self.slogan,
                                                                   self.issue_id,
                                                                   self.error_code,
                                                                   self.config_id,
