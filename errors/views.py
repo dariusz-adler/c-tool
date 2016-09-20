@@ -15,6 +15,7 @@ from ctool import settings
 from django.core import serializers
 from copy import deepcopy
 
+
 def post_errors_to_session(request, errors):
     request.session['errors'] = serializers.serialize("json", errors)
 
@@ -34,6 +35,7 @@ def get_errors_from_session(request):
 
 def index(request):
     all_errors_list = Error.objects.all()
+    post_errors_to_session(request, all_errors_list)
     paginator = Paginator(all_errors_list, 15)
     page = request.GET.get('page')
     try:
@@ -140,6 +142,7 @@ def create_copy(request, error_id):
 
     return render(request, 'errors/error_form.html', context)
 
+
 def advanced_search(request):
     window_role = "ADVANCED SEARCH"
     button_role = 'SEARCH'
@@ -186,11 +189,14 @@ def dynamic_query(request, model, fields, values, operator):
             else:
                 q = None
         if q:
-            context = {'all_errors': model.objects.filter(q),
+            errors = model.objects.filter(q)
+            post_errors_to_session(request, errors)
+            context = {'all_errors': errors,
                        'fields': Error().get_fields()}
             return render(request, 'errors/index.html', context)
     else:
         all_errors = model.objects.all()
+        post_errors_to_session(request, all_errors)
         context = {'all_errors': all_errors,
                    'fields': Error().get_fields()}
         return render(request, 'errors/index.html', context)
