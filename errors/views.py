@@ -1,5 +1,5 @@
 from .forms import ErrorForm
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from .forms import SearchForm
 from django.shortcuts import render
 from .models import Error
@@ -8,11 +8,28 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from ctool import settings
+from django.core import serializers
+
+
+def post_errors_to_session(request, errors):
+    request.session['errors'] = serializers.serialize("json", errors)
+
+
+def get_errors_from_session(request):
+    if "errors" in request.session:
+        keys = []
+        for obj in serializers.deserialize("json", request.session['errors']):
+            keys.append(obj.object.pk)
+
+        errors = Error.objects.filter(pk__in=keys)
+    else:
+        errors = Error.objects.all()
+
+    return errors
 
 
 def index(request):
@@ -195,5 +212,3 @@ def login_user(request):
 def logout_user(request):
     auth.logout(request)
     return HttpResponseRedirect(settings.LOGIN_URL)
-
-
