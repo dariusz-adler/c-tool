@@ -40,7 +40,7 @@
                         <td>{{ value }}</td>
                     {% endfor %}
                     {% if user.is_authenticated %}
-                        <td><a href="{% url 'error:detail' error.id %}" class="btn btn-default btn-md" role="button">Details</a></td>
+                        <td><a href="{% url 'error:create_copy' error.id %}" class="btn btn-default btn-md" role="button">Create copy</a></td>
                         <td><a href="{% url 'error:update' error.id %}" class="btn btn-primary btn-md" role="button">
                                 <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>  Edit
                             </a>

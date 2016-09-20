@@ -13,7 +13,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from ctool import settings
 from django.core import serializers
-
+from copy import deepcopy
 
 def post_errors_to_session(request, errors):
     request.session['errors'] = serializers.serialize("json", errors)
@@ -114,6 +114,31 @@ def add_error(request):
     return render(request, 'errors/error_form.html', {'form': form, 'button_role': button_role,
                                                       'window_role': window_role})
 
+
+def create_copy(request, error_id):
+
+    button_role = 'CREATE'
+    window_role = 'CREATE COPY'
+    error = Error.objects.get(id=error_id)
+    form = ErrorForm(request.POST or None, instance=error)
+
+    if request.method == "POST":
+
+        if form.is_valid():
+
+            error_copy = deepcopy(error)
+            error_copy.id = None
+            error_copy.save()
+            messages.success(request, 'Error copy has beed created with id: {}'.format(error_copy.id))
+            return HttpResponseRedirect(reverse('error:index'))
+
+    context = {
+        'form': form,
+        'button_role': button_role,
+        'window_role': window_role,
+    }
+
+    return render(request, 'errors/error_form.html', context)
 
 def advanced_search(request):
     window_role = "ADVANCED SEARCH"

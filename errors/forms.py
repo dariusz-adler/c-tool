@@ -4,6 +4,12 @@ from .models import Error
 
 class ErrorForm(forms.ModelForm):
 
+    error_code = forms.CharField(required=False)
+    suite = forms.CharField(required=False)
+    script_label = forms.CharField(required=False)
+    jenkins_path = forms.CharField(required=False)
+    env_version = forms.CharField(required=False)
+
     class Meta:
         model = Error
         fields = ['slogan', 'issue_id', 'error_code', 'config_id', 'software_label', 'tc_number', 'suite',

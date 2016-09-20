@@ -25,4 +25,6 @@ urlpatterns = [
 
     url(r'index/$', views.index, name='index'),
 
+	# /createcopy/[copy-id]
+    url(r'^createcopy/(?P<error_id>[0-9]+)/$', views.create_copy, name='create_copy'),
 ]

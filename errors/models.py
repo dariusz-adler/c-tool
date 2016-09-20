@@ -13,14 +13,19 @@ class Error(models.Model):
     date = models.DateField()
     jenkins_path = models.CharField(max_length=200)
 
-    test_environment = models.CharField(max_length=200, default='', choices=[('ufte', 'ufte'), ('hibiscus',
-                                                                                                'hibiscus')])
-    fault_area = models.CharField(max_length=200, default='', choices=[('CI Fault', 'CI Fault'), ('Product Fault',
-                                                                                                  'Product Fault')])
-    state = models.CharField(max_length=200, default='', choices=[('in progress', 'in progress'), ('frozen', 'frozen'),
-                                                                  ('solved', 'solved')])
+    test_environment = models.CharField(max_length=200, blank=False,
+                                        choices=[('ufte', 'ufte'), ('hibiscus', 'hibiscus')],
+                                        null=False)
 
-    comment = models.CharField(max_length=1000)
+    fault_area = models.CharField(max_length=200, blank=False,
+                                  choices=[('CI Fault', 'CI Fault'), ('Product Fault', 'Product Fault')],
+                                  null=False)
+
+    state = models.CharField(max_length=200, blank=False,
+                             choices=[('in progress', 'in progress'), ('frozen', 'frozen'), ('solved', 'solved')],
+                             null=False)
+
+    comment = models.TextField(max_length=500)
     env_version = models.CharField(max_length=100)
 
     def get_fields(self):
