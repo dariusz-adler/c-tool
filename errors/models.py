@@ -1,8 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import Permission, User
 import re
 
 
 class Error(models.Model):
+    user = models.ForeignKey(User, default=1)
     slogan = models.CharField(max_length=200)
     issue_id = models.CharField(max_length=200)
     error_code = models.CharField(max_length=200)
