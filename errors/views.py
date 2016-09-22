@@ -141,6 +141,16 @@ def create_copy(request, error_id):
         if form.is_valid():
             error_copy = deepcopy(error)
             error_copy.id = None
+            error_copy.issue_id = error.parse_issue_id_to_url_address()
+            if error_copy.issue_id is None:
+                form = ErrorForm(request.POST or None, instance=error_copy)
+                context = {
+                    'form': form,
+                    'button_role': button_role,
+                    'window_role': window_role,
+                }
+                messages.warning(request, 'No support for this issue_id')
+                return render(request, 'errors/error_form.html', context)
             error_copy.save()
             messages.success(request, 'Error copy has beed created with id: {}'.format(error_copy.id))
             return HttpResponseRedirect(reverse('error:index'))
@@ -220,6 +230,16 @@ def update_error(request, error_id):
     form = ErrorForm(request.POST or None, instance=error)
     if form.is_valid():
         error = form.save(commit=False)
+        error.issue_id = error.parse_issue_id_to_url_address()
+        if error.issue_id is None:
+            form = ErrorForm(request.POST or None, instance=error)
+            context = {
+                'form': form,
+                'button_role': button_role,
+                'window_role': window_role,
+            }
+            messages.warning(request, 'No support for this issue_id')
+            return render(request, 'errors/error_form.html', context)
         error.save()
         messages.success(request, 'Error with id {} has beed updated'.format(error.id))
         return HttpResponseRedirect(reverse('error:index'))
