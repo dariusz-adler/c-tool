@@ -16,6 +16,7 @@ from django.core import serializers
 from copy import deepcopy
 
 
+
 def post_errors_to_session(request, errors):
     request.session['errors'] = serializers.serialize("json", errors)
 
@@ -107,7 +108,8 @@ def add_error(request):
     if request.method == "POST":
         form = ErrorForm(request.POST)
         if form.is_valid():
-            error = form.save()
+            error = form.save(commit=False)
+            error.user = request.user
             error.parse_issue_id_to_url_address()
             error.save()
             messages.success(request, 'Error has beed added with id: {}'.format(error.id))
@@ -119,7 +121,6 @@ def add_error(request):
 
 
 def create_copy(request, error_id):
-
     button_role = 'CREATE'
     window_role = 'CREATE COPY'
     error = Error.objects.get(id=error_id)
@@ -128,7 +129,6 @@ def create_copy(request, error_id):
     if request.method == "POST":
 
         if form.is_valid():
-
             error_copy = deepcopy(error)
             error_copy.id = None
             error_copy.save()
@@ -180,7 +180,6 @@ def dynamic_query(request, model, fields, values, operator):
             kwargs = {str('%s__exact' % f): str('%s' % v)}
             queries.append(Q(**kwargs))
     if len(queries) > 0:
-        print(queries)
         q = Q()
         for query in queries:
             if operator == "and":

@@ -55,7 +55,8 @@ class Error(models.Model):
         matcher = re.match(pattern, self.issue_id)
 
         if matcher:
-            self.issue_id = "https://mhweb.ericsson.se/TREditWeb/faces/oo/object.xhtml?eriref={}&mode=VIEW".format(self.issue_id)
+            self.issue_id = "https://mhweb.ericsson.se/TREditWeb/faces/oo/object.xhtml?eriref={}&mode=VIEW".format(
+                self.issue_id)
 
         pattern = r'[a-zA-Z]{3}-[a-zA-Z]{2}-\d{3}'
         matcher = re.match(pattern, self.issue_id)
