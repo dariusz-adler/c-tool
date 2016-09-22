@@ -111,6 +111,16 @@ def add_error(request):
             error = form.save(commit=False)
             error.user = request.user
             error.issue_id = error.parse_issue_id_to_url_address()
+            if error.issue_id is None:
+                form = ErrorForm(request.POST or None, instance=error)
+                context = {
+                    'form': form,
+                    'button_role': button_role,
+                    'window_role': window_role,
+                }
+                messages.warning(request, 'No support for this issue_id')
+                return render(request, 'errors/error_form.html', context)
+
             error.save()
             messages.success(request, 'Error has beed added with id: {}'.format(error.id))
             return HttpResponseRedirect(reverse('error:index'))

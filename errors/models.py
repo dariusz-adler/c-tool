@@ -32,7 +32,13 @@ class Error(models.Model):
     env_version = models.CharField(max_length=100)
 
     def get_fields(self):
-        return [(field.name, field.value_to_string(self)) for field in Error._meta.fields]
+        all_fields = []
+
+        for field in Error._meta.fields:
+            if field.name != 'comment':
+                all_fields.append(field)
+
+        return [(field.name, field.value_to_string(self)) for field in all_fields]
 
     def __str__(self):
         return '{} {} {} {} {} {} {} {} {} {} {} {} {} {}'.format(self.slogan,

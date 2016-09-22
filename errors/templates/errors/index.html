@@ -9,7 +9,7 @@
                 {% for message in messages %}
                     <div class="col-md-offset-4 col-md-4" style="text-align: center;">
                         <div class="alert alert-{{ message.tags }}">
-                            <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: darkgreen;">  </span>
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true">  </span>
                             {{ message }}
                         </div>
                     </div>
@@ -50,12 +50,17 @@
             <tbody>
 
             {% for error in all_errors %}
-                <tr data-toggle="collapse" data-target="#error{{ error.id }}" class="accordion-toggle">
+                <tr data-toggle="collapse" data-target="#error{{ error.id }}" class="accordion-toggle"
+                        {% if error.issue_id == 'TBD' %} style="background: #ffe8b4" {% endif %}>
 
                     {% for name, value in error.get_fields %}
                         {% if name == 'issue_id' %}
-                            <td><a href="{{ value }}">{{ error.parse_url_address_to_issue_id }}</a></td>
-                        {% elif name == 'user' %}
+                            {% if value == 'TBD' %}
+                                <td>{{ error.parse_url_address_to_issue_id }}</td>
+                            {% else %}
+                                <td><a href="{{ value }}">{{ error.parse_url_address_to_issue_id }}</a></td>
+                            {% endif %}
+                            {% elif name == 'user' %}
                             <td>{{ error.user }}</td>
                         {% else %}
                             <td>{{ value }}</td>
@@ -93,7 +98,7 @@
                                     </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12"><br>CREATED BY: USER</div>
+                                        <div class="col-md-12"><br>CREATED BY: {{ error.user }}</div>
                                     </div>
                                 {% endif %}
                         </div>
