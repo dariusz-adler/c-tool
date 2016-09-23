@@ -46,8 +46,8 @@ def index(request):
         all_errors = paginator.page(paginator.num_pages)
     query = request.GET.get("q")
     if query:
-        fields = ['slogan', 'issue_id', 'error_code', 'config_id', 'software_label', 'tc_number', 'suite',
-                  'script_label', 'jenkins_path', 'test_environment', 'state']
+        fields = ['created_by', 'slogan', 'issue_id', 'error_code', 'config_id', 'software_label', 'tc_number', 'suite',
+                  'script_label', 'jenkins_path', 'test_environment', 'fault_area','state', 'env_version']
         values = []
         for i in range(len(fields)):
             values.append(query)
@@ -58,6 +58,8 @@ def index(request):
                    'fields': Error().get_fields()}
 
     return render(request, 'errors/index.html', context)
+
+
 
 
 def detail(request, error_id):
@@ -108,7 +110,7 @@ def add_error(request):
         form = ErrorForm(request.POST)
         if form.is_valid():
             error = form.save(commit=False)
-            error.user = request.user
+            error.created_by = request.user
             error.issue_id = error.parse_issue_id_to_url_address()
             error.save()
             messages.success(request, 'Error has beed added with id: {}'.format(error.id))
@@ -131,6 +133,7 @@ def create_copy(request, error_id):
         if form.is_valid():
             error_copy = deepcopy(error)
             error_copy.id = None
+            error_copy.created_by = request.user
             error_copy.issue_id = error.parse_issue_id_to_url_address()
             error_copy.save()
             messages.success(request, 'Error copy has beed created with id: {}'.format(error_copy.id))
@@ -178,7 +181,7 @@ def dynamic_query(request, model, fields, values, operator):
     queries = []
     for (f, v) in zip(fields, values):
         if v != "":
-            kwargs = {str('%s__exact' % f): str('%s' % v)}
+            kwargs = {str('%s__icontains' % f): str('%s' % v)}
             queries.append(Q(**kwargs))
     if len(queries) > 0:
         q = Q()
@@ -224,6 +227,7 @@ def update_error(request, error_id):
     }
     messages.warning(request, 'No support for this issue_id')
     return render(request, 'errors/error_form.html', context)
+
 
 
 def login_user(request):

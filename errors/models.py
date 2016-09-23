@@ -1,10 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import Permission, User
 import re
 
 
 class Error(models.Model):
-    user = models.ForeignKey(User, default=1)
+    created_by = models.CharField(max_length=200)
     slogan = models.CharField(max_length=200)
     issue_id = models.CharField(max_length=200)
     error_code = models.CharField(max_length=200)
@@ -41,20 +40,22 @@ class Error(models.Model):
         return [(field.name, field.value_to_string(self)) for field in all_fields]
 
     def __str__(self):
-        return '{} {} {} {} {} {} {} {} {} {} {} {} {} {}'.format(self.slogan,
-                                                                  self.issue_id,
-                                                                  self.error_code,
-                                                                  self.config_id,
-                                                                  self.software_label,
-                                                                  self.tc_number,
-                                                                  self.suite,
-                                                                  self.script_label,
-                                                                  self.date,
-                                                                  self.jenkins_path,
-                                                                  self.test_environment,
-                                                                  self.fault_area,
-                                                                  self.state,
-                                                                  self.env_version)
+        return '{} {} {} {} {} {} {} {} {} {} {} {} {} {}'.format(
+            self.created_by,
+            self.slogan,
+            self.issue_id,
+            self.error_code,
+            self.config_id,
+            self.software_label,
+            self.tc_number,
+            self.suite,
+            self.script_label,
+            self.date,
+            self.jenkins_path,
+            self.test_environment,
+            self.fault_area,
+            self.state,
+            self.env_version)
 
     def parse_issue_id_to_url_address(self):
         pattern = r'^CYCLONE-\d+'
