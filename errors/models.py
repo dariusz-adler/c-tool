@@ -112,8 +112,6 @@ class Error(models.Model):
         if matcher:
             return 'TBD'
 
-        return None
-
     def parse_url_address_to_issue_id(self):
         pattern = r'.*eriref=([A-Z]{2}\d{5})'
         matcher = re.match(pattern, self.issue_id)
