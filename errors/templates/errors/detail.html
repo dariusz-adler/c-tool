@@ -19,6 +19,10 @@
                             {% if value %}
                                 {% if name == 'issue_id' %}
                                     {{ name }} : <a href="{{ value }}">{{ value }}</a> </br></br>
+                                {% elif name == 'created_by' %}
+                                    {% if user.is_authenticated %}
+                                         {{ name }} : {{ value }} </br></br>
+                                    {% endif %}
                                 {% else %}
                                     {{ name }} : {{ value }} </br></br>
                                 {% endif %}
