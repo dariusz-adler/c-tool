@@ -28,9 +28,17 @@
                         <th><a href="{% url 'error:sorting' field direction %}">{{ field }} <i
                                 class="{{ icon }}"></i></a></th>
                     {% else %}
-                        <th><a href="{% url 'error:sorting' field 'asc' %}">{{ field }} <i
-                                class="fa fa-sort"></i></a>
-                        </th>
+                        {% if field == "created_by"%}
+                            {% if user.is_authenticated %}
+                                <th><a href="{% url 'error:sorting' field 'asc' %}">{{ field }} <i
+                                        class="fa fa-sort"></i></a>
+                                </th>
+                            {% endif %}
+                            {% else %}
+                             <th><a href="{% url 'error:sorting' field 'asc' %}">{{ field }} <i
+                                        class="fa fa-sort"></i></a>
+                                </th>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
                 <th></th>
@@ -50,7 +58,11 @@
                             {% else %}
                                 <td><a href="{{ value }}">{{ error.parse_url_address_to_issue_id }}</a></td>
                             {% endif %}
-                            {% else %}
+                        {% elif name == 'created_by' %}
+                            {% if user.is_authenticated %}
+                                <td>{{ value }}</td>
+                            {% endif %}
+                        {% else %}
                             <td>{{ value }}</td>
                         {% endif %}
                     {% endfor %}

@@ -3,7 +3,6 @@ import re
 
 
 class Error(models.Model):
-    created_by = models.CharField(max_length=200)
     slogan = models.CharField(max_length=200)
     issue_id = models.CharField(max_length=200)
     error_code = models.CharField(max_length=200)
@@ -29,6 +28,7 @@ class Error(models.Model):
 
     comment = models.TextField(max_length=1000)
     env_version = models.CharField(max_length=100)
+    created_by = models.CharField(max_length=200)
 
     def get_fields(self):
         all_fields = []
@@ -41,7 +41,6 @@ class Error(models.Model):
 
     def __str__(self):
         return '{} {} {} {} {} {} {} {} {} {} {} {} {} {}'.format(
-            self.created_by,
             self.slogan,
             self.issue_id,
             self.error_code,
@@ -55,7 +54,9 @@ class Error(models.Model):
             self.test_environment,
             self.fault_area,
             self.state,
-            self.env_version)
+            self.env_version,
+            self.created_by,)
+
 
     def parse_issue_id_to_url_address(self):
         pattern = r'^CYCLONE-\d+'
