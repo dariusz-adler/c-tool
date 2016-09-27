@@ -1,5 +1,5 @@
 from django import forms
-from .models import Error
+from .models import Error, UserComment
 from django.core.exceptions import ValidationError
 import re
 
@@ -27,6 +27,20 @@ class ErrorForm(forms.ModelForm):
                   'script_label', 'date', 'jenkins_path', 'test_environment', 'fault_area', 'state', 'comment',
                   'env_version']
 
+class EditErrorForm(forms.ModelForm):
+
+    error_code = forms.CharField(required=False)
+    suite = forms.CharField(required=False)
+    script_label = forms.CharField(required=False)
+    jenkins_path = forms.CharField(required=False)
+    env_version = forms.CharField(required=False)
+
+    class Meta:
+        model = Error
+        fields = ['slogan', 'issue_id', 'error_code', 'config_id', 'software_label', 'tc_number', 'suite',
+                  'script_label', 'date', 'jenkins_path', 'test_environment', 'fault_area', 'state',
+                  'env_version']
+
 
 class SearchForm(forms.ModelForm):
     slogan = forms.CharField(required=False)
@@ -51,3 +65,11 @@ class SearchForm(forms.ModelForm):
                   'script_label', 'date', 'jenkins_path', 'test_environment', 'fault_area', 'state', 'comment',
                   'env_version']
 
+
+class UserCommentForm(forms.ModelForm):
+
+    user_comment = forms.CharField(required=True)
+
+    class Meta:
+        model = UserComment
+        fields = ['user_comment']

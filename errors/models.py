@@ -1,5 +1,7 @@
 from django.db import models
 import re
+from datetime import datetime
+from django.contrib.auth.models import User
 
 
 class Error(models.Model):
@@ -138,3 +140,18 @@ class Error(models.Model):
 
         if matcher:
             return 'TBD'
+
+class UserComment(models.Model):
+
+    date = models.DateField(default=datetime.now)
+    time = models.TimeField(default=datetime.now)
+    error = models.ForeignKey(Error, related_name='main_error', null=True)
+    user = models.ForeignKey(User, null=True)
+    user_comment = models.CharField(max_length=1000)
+
+    def set_error_fk_key(self, error_fk):
+        error = error_fk
+        return error
+
+    def __str__(self):
+        return '{} {} {} {}'.format(self.date, self.error, self.user_comment, self.user)

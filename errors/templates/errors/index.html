@@ -70,40 +70,38 @@
                     {% if user.is_authenticated %}
                         <td><a href="{% url 'error:create_copy' error.id %}" class="btn btn-default btn-md"
                                role="button">Create copy</a></td>
+
                         <td><a href="{% url 'error:update' error.id %}" class="btn btn-primary btn-md" role="button">
-                            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Edit
-                        </a>
+                            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Edit</a>
                         </td>
+
                     {% endif %}
 
                 </tr>
                 <tr>
-                    <td colspan="18" class="hiddenRow">
-                        <div class="accordian-body collapse" id="error{{ error.id }}">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h4>COMMENT:</h4>
-                                    {{ error.comment }}<br><br>
-                                    <a href="{% url 'error:detail' error.id %}" class="btn btn-primary btn-md"
-                                       role="button">Details
-                                    </a>
-                                </div>
-                                {% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
+
+                        <td colspan="18" class="hiddenRow">
+                            <div class="accordian-body collapse" id="error{{ error.id }}">
+                                <div class="row">
                                     <div class="col-md-6">
-                                        <h4>LATEST ACTIVITY:</h4>
-                                        latest activity <br><br>
-                                        <a href="#" class="btn btn-primary btn-md"
-                                           role="button">Show history
+                                        <h4>GENERAL COMMENT:</h4>
+                                        {{ error.comment }}<br><br>
+                                        <a href="{% url 'error:detail' error.id %}" class="btn btn-primary btn-md"
+                                           role="button">Details & Comments
                                         </a>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <h4>LATEST ACTIVITY:</h4>latest activity <br><br>
+                                        <a href="#" class="btn btn-primary btn-md" role="button">Show history</a>
                                     </div>
-                                {% endif %}
+                                </div>
+                    {% endif %}
                         </div>
                     </td>
                 </tr>
-
             {% endfor %}
-
             </tbody>
         </table>
 

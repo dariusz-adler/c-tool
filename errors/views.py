@@ -1,4 +1,4 @@
-from .forms import ErrorForm
+from .forms import ErrorForm, UserCommentForm, EditErrorForm
 from django.shortcuts import get_object_or_404
 from .forms import SearchForm
 from django.shortcuts import render
@@ -34,7 +34,7 @@ def get_errors_from_session(request):
 
 
 def index(request):
-    all_errors_list = Error.objects.all()
+    all_errors_list = Error.objects.order_by('-id')
     post_errors_to_session(request, all_errors_list)
     paginator = Paginator(all_errors_list, 15)
     page = request.GET.get('page')
@@ -60,11 +60,24 @@ def index(request):
     return render(request, 'errors/index.html', context)
 
 
-
-
 def detail(request, error_id):
     error = Error.objects.get(pk=error_id)
-    return render(request, 'errors/detail.html', {'error': error})
+    all_comments = error.main_error.all().order_by('-date', '-time')
+
+    form = UserCommentForm(request.POST or None)
+
+    if form.is_valid():
+        comment = form.save()
+        comment.error = error
+        comment.user = request.user
+        comment.save()
+        messages.success(request, 'Comment has been added')
+
+    context = {'error': error,
+               'form': form,
+               'all_comments': all_comments}
+
+    return render(request, 'errors/detail.html', context)
 
 
 def sorting(request, column, direction):
@@ -211,10 +224,9 @@ def update_error(request, error_id):
     button_role = 'UPDATE'
     window_role = 'UPDATE ERROR'
     error = get_object_or_404(Error, id=error_id)
-    form = ErrorForm(request.POST or None, instance=error)
+    form = EditErrorForm(request.POST or None, instance=error)
     if form.is_valid():
         error = form.save(commit=False)
-        error.issue_id = error.parse_issue_id_to_url_address()
         error.save()
         messages.success(request, 'Error with id {} has beed updated'.format(error.id))
         return HttpResponseRedirect(reverse('error:index'))
@@ -225,9 +237,7 @@ def update_error(request, error_id):
         'button_role': button_role,
         'window_role': window_role,
     }
-    messages.warning(request, 'No support for this issue_id')
     return render(request, 'errors/error_form.html', context)
-
 
 
 def login_user(request):
