@@ -128,9 +128,10 @@ def add_error(request):
             error.save()
             messages.success(request, 'Error has beed added with id: {}'.format(error.id))
             return HttpResponseRedirect(reverse('error:index'))
+        else:
+            messages.warning(request, 'No support for this issue_id')
     else:
         form = ErrorForm()
-    messages.warning(request, 'No support for this issue_id')
     return render(request, 'errors/error_form.html', {'form': form, 'button_role': button_role,
                                                       'window_role': window_role})
 
@@ -151,13 +152,14 @@ def create_copy(request, error_id):
             error_copy.save()
             messages.success(request, 'Error copy has beed created with id: {}'.format(error_copy.id))
             return HttpResponseRedirect(reverse('error:index'))
+        else:
+            messages.warning(request, 'No support for this issue_id')
 
     context = {
         'form': form,
         'button_role': button_role,
         'window_role': window_role,
     }
-    messages.warning(request, 'No support for this issue_id')
     return render(request, 'errors/error_form.html', context)
 
 
@@ -225,11 +227,15 @@ def update_error(request, error_id):
     window_role = 'UPDATE ERROR'
     error = get_object_or_404(Error, id=error_id)
     form = EditErrorForm(request.POST or None, instance=error)
-    if form.is_valid():
-        error = form.save(commit=False)
-        error.save()
-        messages.success(request, 'Error with id {} has beed updated'.format(error.id))
-        return HttpResponseRedirect(reverse('error:index'))
+    if request.method == "POST":
+        if form.is_valid():
+            error = form.save(commit=False)
+            error.issue_id = error.parse_issue_id_to_url_address()
+            error.save()
+            messages.success(request, 'Error with id {} has beed updated'.format(error.id))
+            return HttpResponseRedirect(reverse('error:index'))
+        else:
+            messages.warning(request, 'No support for this issue_id')
 
     context = {
         'error': error,

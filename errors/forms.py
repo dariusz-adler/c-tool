@@ -29,6 +29,7 @@ class ErrorForm(forms.ModelForm):
 
 class EditErrorForm(forms.ModelForm):
 
+    issue_id = forms.CharField(validators=[validate_issue_id])
     error_code = forms.CharField(required=False)
     suite = forms.CharField(required=False)
     script_label = forms.CharField(required=False)
