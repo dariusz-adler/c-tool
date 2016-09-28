@@ -1,5 +1,5 @@
 from django import forms
-from .models import Error, UserComment
+from .models import Error, UserComment, ChangeHistory
 from django.core.exceptions import ValidationError
 import re
 
@@ -40,7 +40,7 @@ class EditErrorForm(forms.ModelForm):
         model = Error
         fields = ['slogan', 'issue_id', 'error_code', 'config_id', 'software_label', 'tc_number', 'suite',
                   'script_label', 'date', 'jenkins_path', 'test_environment', 'fault_area', 'state',
-                  'env_version']
+                  'env_version', 'change_description']
 
 
 class SearchForm(forms.ModelForm):
@@ -74,3 +74,12 @@ class UserCommentForm(forms.ModelForm):
     class Meta:
         model = UserComment
         fields = ['user_comment']
+
+
+class HistoryForm(forms.ModelForm):
+
+    history_record = forms.CharField(required=True)
+
+    class Meta:
+        model = ChangeHistory
+        fields = ['history_record']

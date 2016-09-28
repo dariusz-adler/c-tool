@@ -1,4 +1,4 @@
-from .forms import ErrorForm, UserCommentForm, EditErrorForm
+from .forms import ErrorForm, UserCommentForm, EditErrorForm, HistoryForm
 from django.shortcuts import get_object_or_404
 from .forms import SearchForm
 from django.shortcuts import render
@@ -63,6 +63,7 @@ def index(request):
 def detail(request, error_id):
     error = Error.objects.get(pk=error_id)
     all_comments = error.main_error.all().order_by('-date', '-time')
+    all_history = error.history_error.all().order_by('-date', '-time')
 
     form = UserCommentForm(request.POST or None)
 
@@ -75,7 +76,28 @@ def detail(request, error_id):
 
     context = {'error': error,
                'form': form,
-               'all_comments': all_comments}
+               'all_comments': all_comments,
+               'all_history': all_history,}
+
+    return render(request, 'errors/detail.html', context)
+
+
+def change_history(request, error_id):
+    error = Error.objects.get(pk=error_id)
+    all_history = error.history_error.all().order_by('-date', '-time')
+
+    form = UserCommentForm(request.POST or None)
+
+    if form.is_valid():
+        history = form.save()
+        history.error = error
+        history.user = request.user
+        history.save()
+        messages.success(request, 'Comment has been added')
+
+    context = {'error': error,
+               'form': form,
+               'all_history': all_history}
 
     return render(request, 'errors/detail.html', context)
 
@@ -228,15 +250,17 @@ def update_error(request, error_id):
     window_role = 'UPDATE ERROR'
     error = get_object_or_404(Error, id=error_id)
     form = EditErrorForm(request.POST or None, instance=error)
+    history_form = HistoryForm(request.POST or None, instance=error)
     if request.method == "POST":
         if form.is_valid():
+            history = history_form.save(commit=False)
             error = form.save(commit=False)
             error.issue_id = error.parse_issue_id_to_url_address()
             error.save()
             messages.success(request, 'Error with id {} has beed updated'.format(error.id))
             return HttpResponseRedirect(reverse('error:index'))
         else:
-            messages.warning(request, 'No support for one or more fields')
+            messages.warning(request, 'No support for this issue_id')
 
     context = {
         'error': error,

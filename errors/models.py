@@ -31,7 +31,7 @@ class Error(models.Model):
     comment = models.TextField(max_length=1000)
     env_version = models.CharField(max_length=100)
     created_by = models.CharField(max_length=200)
-
+    change_description = models.TextField(max_length=1000)
     def get_fields(self):
         all_fields = []
 
@@ -155,3 +155,18 @@ class UserComment(models.Model):
 
     def __str__(self):
         return '{} {} {} {}'.format(self.date, self.error, self.user_comment, self.user)
+
+
+class ChangeHistory(models.Model):
+    date = models.DateField(default=datetime.now)
+    time = models.TimeField(default=datetime.now)
+    error = models.ForeignKey(Error, related_name='history_error', null=True)
+    user = models.ForeignKey(User, null=True)
+    history_record = models.CharField(max_length=1000)
+
+    def set_error_fk_key(self, error_fk):
+        error = error_fk
+        return error
+
+    def __str__(self):
+        return '{} {} {} {}'.format(self.date, self.error, self.history_record, self.user)

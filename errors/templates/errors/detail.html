@@ -21,7 +21,7 @@
         <!-- FOR LOGGED USER -->
         {% if user.is_authenticated %}
             <div class="row">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-offset-0 col-md-4">
 
                     <div class="panel panel-default">
 
@@ -53,7 +53,8 @@
                         </div>
                         <div class="panel-footer">
                             <a href="{% url 'error:update' error.id %}" class="btn btn-default" role="button">Edit</a>
-                            <a href="{% url 'error:create_copy' error.id %}" class="btn btn-default" role="button">Create Copy</a>
+                            <a href="{% url 'error:create_copy' error.id %}" class="btn btn-default" role="button">Create
+                                Copy</a>
                         </div>
                     </div>
                 </div>
@@ -81,7 +82,6 @@
                         <!-- body -->
                         <div class="panel-body" style="background-color: white;">
                             <div class="form-group">
-
                                 {% for comment in all_comments %}<br/><br/>
                                     {{ comment.user_comment }}<br/>
                                     <p style="font-weight: 700; font-size: smaller;">{{ comment.date }}, {{ comment.time }}, {{ comment.user }}</p>
@@ -99,34 +99,61 @@
 
                     </div>
                 </div>
-            </div>
 
-        {% else %}
-        <!-- FOR NOT LOGGED USER -->
-        <div class="col-md-offset-4 col-md-3">
-            <div class="panel panel-default">
-                <div class="panel-head">
-                    <h3 style="text-align: center">DETAILS FOR ERROR ID: {{ error.id }}</h3>
-                </div>
-                <div class="panel-body" style="background-color: lightgray;">
-                    <div class="form-group">
-                        {% for name, value in error.get_fields %}
-                            {% if value %}
-                                {% if name == 'issue_id' %}
-                                    {{ name }} : <a href="{{ value }}">{{ value }}</a> </br></br>
-								{% elif name == 'created_by' %}
-                                    {% if user.is_authenticated %}
-                                         {{ name }} : {{ value }} </br></br>
-                                    {% endif %}
-                                {% else %}
-                                    {{ name }} : {{ value }} </br></br>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
+
+            <!--HISTORY-->
+                <div class="col-md-4">
+
+                    <div class="panel panel-default">
+
+                        <!-- head -->
+                        <div class="panel-head">
+                            <h3 style="text-align: center">Edit history:</h3>
+                        </div>
+
+                        <!-- body -->
+                        <div class="panel-body" style="background-color: white;">
+                            <div class="form-group">
+                                {% for record in all_history %}<br/><br/>
+                                    {{ record.history_record }}<br/>
+                                    <p style="font-weight: 700; font-size: smaller;">{{ record.date }}, {{ record.time }}, {{ record.user }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- footer -->
+
+
                     </div>
                 </div>
             </div>
-        </div>
+
+        {% else %}
+            <!-- FOR NOT LOGGED USER -->
+            <div class="col-md-offset-4 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-head">
+                        <h3 style="text-align: center">DETAILS FOR ERROR ID: {{ error.id }}</h3>
+                    </div>
+                    <div class="panel-body" style="background-color: lightgray;">
+                        <div class="form-group">
+                            {% for name, value in error.get_fields %}
+                                {% if value %}
+                                    {% if name == 'issue_id' %}
+                                        {{ name }} : <a href="{{ value }}">{{ value }}</a> </br></br>
+                                    {% elif name == 'created_by' %}
+                                        {% if user.is_authenticated %}
+                                            {{ name }} : {{ value }} </br></br>
+                                        {% endif %}
+                                    {% else %}
+                                        {{ name }} : {{ value }} </br></br>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
     </div>
 
