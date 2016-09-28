@@ -73,6 +73,7 @@ def detail(request, error_id):
         comment.user = request.user
         comment.save()
         messages.success(request, 'Comment has been added')
+        return HttpResponseRedirect('/details/{}'.format(error_id))
 
     context = {'error': error,
                'form': form,
