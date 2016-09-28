@@ -54,18 +54,30 @@
                     </div>
                 </div>
 
-                <div class="col-md-5">
+                <div class="col-md-4">
+
+                    <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data" style="text-align: right;">
+                        {% csrf_token %}
+                        <h4 style="text-align: center; color: darkgrey">YOUR COMMENT:</h4>
+                        {% for field in form %}
+                            <div class="form-group">
+                                <div class="col-md-12">{{ field }}</div>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">ADD COMMENT</button>
+                    </form>
 
                     <div class="panel panel-default">
 
-                        <!-- head -->
-                        <div class="panel-head">
+                        <!-- header -->
+                        <panel class="col-md-12" style="background-color: #eeeeee">
                             <h3 style="text-align: center">COMMENTS:</h3>
-                        </div>
+                        </panel>
 
                         <!-- body -->
                         <div class="panel-body" style="background-color: white;">
                             <div class="form-group">
+
                                 {% for comment in all_comments %}<br/><br/>
                                     {{ comment.user_comment }}<br/>
                                     <p style="font-weight: 700; font-size: smaller;">{{ comment.date }}, {{ comment.time }}, {{ comment.user }}</p>
@@ -74,20 +86,12 @@
                         </div>
 
                         <!-- footer -->
-                     <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
-                        <div class="panel-footer">
-                                {% csrf_token %}
-                                {% for field in form %}
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">{{ field.label_tag }}</label>
-                                        <div class="col-md-9">{{ field.as_textarea }}</div>
-                                    </div>
-                                {% endfor %}
 
-                            <button type="submit" class="btn btn-primary">ADD COMMENT</button>
+                        <div class="panel-footer">
+
 
                         </div>
-                    </form>
+
 
                     </div>
                 </div>

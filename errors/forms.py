@@ -69,7 +69,7 @@ class SearchForm(forms.ModelForm):
 
 class UserCommentForm(forms.ModelForm):
 
-    user_comment = forms.CharField(required=True)
+    user_comment = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows':8, 'cols':83}))
 
     class Meta:
         model = UserComment
