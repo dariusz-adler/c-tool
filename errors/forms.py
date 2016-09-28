@@ -5,8 +5,8 @@ import re
 
 
 def validate_issue_id(value):
-    pattern_list = [r'^CYCLONE-\d+', r'^XFTBEAVER-\d+', r'^EHLIGSM-\d+', r'^LSUMSSIM-\d+', r'^HIBISCUS-\d+',
-                    r'^TWOGSIMCS-\d+', r'^[A-Z]{2}\d{5}', r'^[A-Z]{3}-[A-Z]{2}-\d+', r'^TBD$']
+    pattern_list = [r'^CYCLONE-\d+$', r'^XFTBEAVER-\d+$', r'^EHLIGSM-\d+$', r'^LSUMSSIM-\d+$', r'^HIBISCUS-\d+$',
+                    r'^TWOGSIMCS-\d+$', r'^[A-Z]{2}\d{5}$', r'^[A-Z]{3}-[A-Z]{2}-\d+$', r'^TBD$']
 
     if not any(re.match(pattern, value) for pattern in pattern_list):
         raise ValidationError('%(value)s is not an even number', params={'value': value})

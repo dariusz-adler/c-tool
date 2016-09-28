@@ -61,50 +61,50 @@ class Error(models.Model):
 
 
     def parse_issue_id_to_url_address(self):
-        pattern = r'^CYCLONE-\d+'
+        pattern = r'^CYCLONE-\d+$'
         matcher = re.match(pattern, self.issue_id)
 
         if matcher:
             return "https://wcdma-jira.rnd.ki.sw.ericsson.se/browse/{}".format(self.issue_id)
 
-        pattern = r'^XFTBEAVER-\d+'
+        pattern = r'^XFTBEAVER-\d+$'
         matcher = re.match(pattern, self.issue_id)
 
         if matcher:
             return "https://wcdma-jira.rnd.ki.sw.ericsson.se/browse/{}".format(self.issue_id)
 
-        pattern = r'^EHLIGSM-\d+'
+        pattern = r'^EHLIGSM-\d+$'
         matcher = re.match(pattern, self.issue_id)
 
         if matcher:
             return "https://jira.lmera.ericsson.se/browse/{}".format(self.issue_id)
 
-        pattern = r'^LSUMSSIM-\d+'
+        pattern = r'^LSUMSSIM-\d+$'
         matcher = re.match(pattern, self.issue_id)
 
         if matcher:
             return "https://track.lineserver.net/browse/{}".format(self.issue_id)
 
-        pattern = r'^HIBISCUS-\d+'
+        pattern = r'^HIBISCUS-\d+$'
         matcher = re.match(pattern, self.issue_id)
 
         if matcher:
             return "https://wcdma-jira.rnd.ki.sw.ericsson.se/browse/{}".format(self.issue_id)
 
-        pattern = r'^TWOGSIMCS-\d+'
+        pattern = r'^TWOGSIMCS-\d+$'
         matcher = re.match(pattern, self.issue_id)
 
         if matcher:
             return "https://wcdma-jira.rnd.ki.sw.ericsson.se/browse/{}".format(self.issue_id)
 
-        pattern = r'^[A-Z]{2}\d{5}'
+        pattern = r'^[A-Z]{2}\d{5}$'
         matcher = re.match(pattern, self.issue_id)
 
         if matcher:
             return "https://mhweb.ericsson.se/TREditWeb/faces/oo/object.xhtml?eriref={}&mode=VIEW".format(
                 self.issue_id)
 
-        pattern = r'^[A-Z]{3}-[A-Z]{2}-\d+'
+        pattern = r'^[A-Z]{3}-[A-Z]{2}-\d+$'
         matcher = re.match(pattern, self.issue_id)
 
         if matcher:
