@@ -129,7 +129,7 @@ def add_error(request):
             messages.success(request, 'Error has beed added with id: {}'.format(error.id))
             return HttpResponseRedirect(reverse('error:index'))
         else:
-            messages.warning(request, 'No support for this issue_id')
+            messages.warning(request, 'No support for one or more fields')
     else:
         form = ErrorForm()
     return render(request, 'errors/error_form.html', {'form': form, 'button_role': button_role,
@@ -153,7 +153,7 @@ def create_copy(request, error_id):
             messages.success(request, 'Error copy has beed created with id: {}'.format(error_copy.id))
             return HttpResponseRedirect(reverse('error:index'))
         else:
-            messages.warning(request, 'No support for this issue_id')
+            messages.warning(request, 'No support for one or more fields')
 
     context = {
         'form': form,
@@ -235,7 +235,7 @@ def update_error(request, error_id):
             messages.success(request, 'Error with id {} has beed updated'.format(error.id))
             return HttpResponseRedirect(reverse('error:index'))
         else:
-            messages.warning(request, 'No support for this issue_id')
+            messages.warning(request, 'No support for one or more fields')
 
     context = {
         'error': error,
