@@ -156,6 +156,7 @@ def create_copy(request, error_id):
             messages.warning(request, 'No support for one or more fields')
 
     context = {
+        'error': error,
         'form': form,
         'button_role': button_role,
         'window_role': window_role,
