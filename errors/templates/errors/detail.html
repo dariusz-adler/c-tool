@@ -35,7 +35,11 @@
                                 {% for name, value in error.get_fields %}
                                     {% if value %}
                                         {% if name == 'issue_id' %}
-                                            {{ name }} : <a href="{{ value }}">{{ value }}</a> </br></br>
+                                            {% if value == 'TBD' %}
+                                                {{ name }} : {{ value }} </br></br>
+                                            {% else %}
+                                                {{ name }} : <a href="{{ value }}">{{ value }}</a> </br></br>
+                                            {% endif %}
 										{% elif name == 'created_by' %}
 											{% if user.is_authenticated %}
 												 {{ name }} : {{ value }} </br></br>
