@@ -7,7 +7,7 @@
         {% elif field.name == 'script_label' %}
             <div class="scriptlabel col-md-9">{{ field }}</div>
         {% elif field.name == 'issue_id' %}
-            <div class="col-md-9"><input id="id_issue_id" name="issue_id" type="text" value="{{ error.parse_url_address_to_issue_id }}" required="" data-dpmaxz-eid="6"></div>
+            <div class="col-md-9"><input id="id_issue_id" name="issue_id" type="text" value="{{ error.parse_url_address_to_issue_id }}"  data-dpmaxz-eid="6"></div>
         {% else %}
             <div class="col-md-9">{{ field }}</div>
         {% endif %}
