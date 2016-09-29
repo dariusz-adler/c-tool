@@ -228,7 +228,6 @@ def dynamic_query(request, model, fields, values, operator):
 
 @login_required
 def update_error(request, error_id):
-    form_header = "What did you change?"
     button_role = 'UPDATE'
     window_role = 'UPDATE ERROR'
     error = get_object_or_404(Error, id=error_id)
@@ -245,7 +244,7 @@ def update_error(request, error_id):
             history.user = request.user
             history.save()
             messages.success(request, 'Error with id {} has beed updated'.format(error.id))
-            return HttpResponseRedirect(reverse('error:index'))
+            return HttpResponseRedirect('/details/{}'.format(error_id))
         else:
             messages.warning(request, 'No support for this issue_id')
 

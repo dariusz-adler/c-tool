@@ -51,6 +51,7 @@
                                 {% endfor %}
                             </div>
                         </div>
+
                         <div class="panel-footer">
                             <a href="{% url 'error:update' error.id %}" class="btn btn-default" role="button">Edit</a>
                             <a href="{% url 'error:create_copy' error.id %}" class="btn btn-default" role="button">Create Copy</a>
@@ -60,19 +61,16 @@
                     </div>
                 </div>
 
+
+
+
+                <!--COMMENTS-->
                 <div class="col-md-4">
 
                     <div class="panel panel-default">
                         <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data"
-                          >
+                          ">
                         {% csrf_token %}
-                        <h4 style="text-align: center; color: darkgrey">YOUR COMMENT:</h4>
-                        {% for field in form %}
-                            <div class="form-group">
-                                <div class="col-md-12">{{ field }}</div>
-                            </div>
-                        {% endfor %}
-                            <button type="submit" class="btn btn-primary">Add Comment</button>
                         {% include 'errors/comment_modal.html' %}
                     </form>
                         <!-- head -->
@@ -89,15 +87,6 @@
                                 {% endfor %}
                             </div>
                         </div>
-
-                        <!-- footer -->
-
-                        <div class="panel-footer">
-
-
-                        </div>
-
-
                     </div>
                 </div>
 
