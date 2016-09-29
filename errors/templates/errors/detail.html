@@ -40,10 +40,10 @@
                                             {% else %}
                                                 {{ name }} : <a href="{{ value }}">{{ value }}</a> </br></br>
                                             {% endif %}
-										{% elif name == 'created_by' %}
-											{% if user.is_authenticated %}
-												 {{ name }} : {{ value }} </br></br>
-											{% endif %}
+                                        {% elif name == 'created_by' %}
+                                            {% if user.is_authenticated %}
+                                                {{ name }} : {{ value }} </br></br>
+                                            {% endif %}
                                         {% else %}
                                             {{ name }} : {{ value }} </br></br>
                                         {% endif %}
@@ -53,15 +53,18 @@
                         </div>
                         <div class="panel-footer">
                             <a href="{% url 'error:update' error.id %}" class="btn btn-default" role="button">Edit</a>
-                            <a href="{% url 'error:create_copy' error.id %}" class="btn btn-default" role="button">Create
-                                Copy</a>
+                            <a href="{% url 'error:create_copy' error.id %}" class="btn btn-default" role="button">Create Copy</a>
+                              <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#commentModal">Add a comment</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
 
-                    <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data" style="text-align: right;">
+                    <div class="panel panel-default">
+                        <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data"
+                          >
                         {% csrf_token %}
                         <h4 style="text-align: center; color: darkgrey">YOUR COMMENT:</h4>
                         {% for field in form %}
@@ -70,17 +73,15 @@
                             </div>
                         {% endfor %}
                             <button type="submit" class="btn btn-primary">Add Comment</button>
+                        {% include 'errors/comment_modal.html' %}
                     </form>
-
-                    <div class="panel panel-default">
-
-                        <!-- header -->
-                        <panel class="col-md-12" style="background-color: #eeeeee">
-                            <h3 style="text-align: center">COMMENTS:</h3>
-                        </panel>
+                        <!-- head -->
+                        <div class="panel-head">
+                            <h3 style="text-align: center">COMMENTS: </h3>
+                        </div>
 
                         <!-- body -->
-                        <div class="panel-body" style="background-color: white;">
+                        <div class="panel-body" style="background-color: lightgray;">
                             <div class="form-group">
                                 {% for comment in all_comments %}<br/><br/>
                                     {{ comment.user_comment }}<br/>
@@ -101,18 +102,18 @@
                 </div>
 
 
-            <!--HISTORY-->
+                <!--HISTORY-->
                 <div class="col-md-4">
 
                     <div class="panel panel-default">
 
                         <!-- head -->
                         <div class="panel-head">
-                            <h3 style="text-align: center">Edit history:</h3>
+                            <h3 style="text-align: center">EDIT HISTORY </h3>
                         </div>
 
                         <!-- body -->
-                        <div class="panel-body" style="background-color: white;">
+                        <div class="panel-body" style="background-color: lightgray;">
                             <div class="form-group">
                                 {% for record in all_history %}<br/><br/>
                                     {{ record.history_record }}<br/>

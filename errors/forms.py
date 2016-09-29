@@ -40,7 +40,7 @@ class EditErrorForm(forms.ModelForm):
         model = Error
         fields = ['slogan', 'issue_id', 'error_code', 'config_id', 'software_label', 'tc_number', 'suite',
                   'script_label', 'date', 'jenkins_path', 'test_environment', 'fault_area', 'state',
-                  'env_version', 'change_description']
+                  'env_version']
 
 
 class SearchForm(forms.ModelForm):
@@ -69,7 +69,7 @@ class SearchForm(forms.ModelForm):
 
 class UserCommentForm(forms.ModelForm):
 
-    user_comment = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows':8, 'cols':83}))
+    user_comment = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows':8, 'cols':75, 'style':'resize:none;'}))
 
     class Meta:
         model = UserComment
@@ -78,7 +78,7 @@ class UserCommentForm(forms.ModelForm):
 
 class HistoryForm(forms.ModelForm):
 
-    history_record = forms.CharField(required=True)
+    history_record = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows':8, 'cols':75, 'style':'resize:none;'}))
 
     class Meta:
         model = ChangeHistory

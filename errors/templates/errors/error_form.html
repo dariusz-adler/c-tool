@@ -33,6 +33,17 @@
                         <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             {% include 'errors/form-template.html' %}
+                            {% if button_role == "UPDATE" %}
+                                {% include 'errors/history_modal.html' %}
+                                <div class="form-group">
+                                    <div class="col-md-offset-9 col-md-2">
+
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#historyModal">{{ button_role }}</button>
+                                    </div>
+
+                                </div>
+                            {% else %}
                             <div class="form-group">
 
                                 <div class="col-md-offset-9 col-md-2">
@@ -40,6 +51,7 @@
                                 </div>
 
                             </div>
+                            {% endif %}
 
                         </form>
 

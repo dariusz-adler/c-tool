@@ -80,25 +80,6 @@ def detail(request, error_id):
                'all_comments': all_comments,
                'all_history': all_history,}
 
-    return render(request, 'errors/detail.html', context)
-
-
-def change_history(request, error_id):
-    error = Error.objects.get(pk=error_id)
-    all_history = error.history_error.all().order_by('-date', '-time')
-
-    form = UserCommentForm(request.POST or None)
-
-    if form.is_valid():
-        history = form.save()
-        history.error = error
-        history.user = request.user
-        history.save()
-        messages.success(request, 'Comment has been added')
-
-    context = {'error': error,
-               'form': form,
-               'all_history': all_history}
 
     return render(request, 'errors/detail.html', context)
 
@@ -247,17 +228,22 @@ def dynamic_query(request, model, fields, values, operator):
 
 @login_required
 def update_error(request, error_id):
+    form_header = "What did you change?"
     button_role = 'UPDATE'
     window_role = 'UPDATE ERROR'
     error = get_object_or_404(Error, id=error_id)
     form = EditErrorForm(request.POST or None, instance=error)
-    history_form = HistoryForm(request.POST or None, instance=error)
+    form2 = HistoryForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
-            history = history_form.save(commit=False)
             error = form.save(commit=False)
             error.issue_id = error.parse_issue_id_to_url_address()
             error.save()
+
+            history = form2.save()
+            history.error = error
+            history.user = request.user
+            history.save()
             messages.success(request, 'Error with id {} has beed updated'.format(error.id))
             return HttpResponseRedirect(reverse('error:index'))
         else:
@@ -266,6 +252,7 @@ def update_error(request, error_id):
     context = {
         'error': error,
         'form': form,
+        'form2': form2,
         'button_role': button_role,
         'window_role': window_role,
     }

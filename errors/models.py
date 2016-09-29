@@ -32,11 +32,12 @@ class Error(models.Model):
     env_version = models.CharField(max_length=100)
     created_by = models.CharField(max_length=200)
     change_description = models.TextField(max_length=1000)
+
     def get_fields(self):
         all_fields = []
 
         for field in Error._meta.fields:
-            if field.name != 'comment':
+            if field.name != 'comment' and field.name != 'change_description':
                 all_fields.append(field)
 
         return [(field.name, field.value_to_string(self)) for field in all_fields]
@@ -58,7 +59,6 @@ class Error(models.Model):
             self.state,
             self.env_version,
             self.created_by,)
-
 
     def parse_issue_id_to_url_address(self):
         pattern = r'^CYCLONE-\d+$'
@@ -140,6 +140,7 @@ class Error(models.Model):
 
         if matcher:
             return 'TBD'
+
 
 class UserComment(models.Model):
 
