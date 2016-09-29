@@ -9,7 +9,14 @@ def validate_issue_id(value):
                     r'^TWOGSIMCS-\d+$', r'^[A-Z]{2}\d{5}$', r'^[A-Z]{3}-[A-Z]{2}-\d+$', r'^TBD$']
 
     if not any(re.match(pattern, value) for pattern in pattern_list):
-        raise ValidationError('%(value)s is not an even number', params={'value': value})
+        raise ValidationError('%(value)s is not appropriate issue_id', params={'value': value})
+
+
+def validate_jenkins_path(value):
+    pattern_list = [r'^https://']
+
+    if not any(re.match(pattern, value) for pattern in pattern_list):
+        raise ValidationError('%(value)s is not appropriate jenkins_path', params={'value': value})
 
 
 class ErrorForm(forms.ModelForm):
@@ -18,7 +25,7 @@ class ErrorForm(forms.ModelForm):
     error_code = forms.CharField(required=False)
     suite = forms.CharField(required=False)
     script_label = forms.CharField(required=False)
-    jenkins_path = forms.CharField(required=False)
+    jenkins_path = forms.CharField(required=False, validators=[validate_jenkins_path])
     env_version = forms.CharField(required=False)
     test_environment = forms.ChoiceField(choices=[('', ''), ('ufte', 'ufte'), ('hibiscus', 'hibiscus')],
                                          widget=forms.Select(attrs={'class': 'environment'}))
@@ -35,7 +42,7 @@ class EditErrorForm(forms.ModelForm):
     error_code = forms.CharField(required=False)
     suite = forms.CharField(required=False)
     script_label = forms.CharField(required=False)
-    jenkins_path = forms.CharField(required=False)
+    jenkins_path = forms.CharField(required=False, validators=[validate_jenkins_path])
     env_version = forms.CharField(required=False)
     test_environment = forms.ChoiceField(choices=[('', ''), ('ufte', 'ufte'), ('hibiscus', 'hibiscus')],
                                          widget=forms.Select(attrs={'class': 'environment'}))

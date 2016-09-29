@@ -25,7 +25,7 @@
                 {% for field, _ in fields %}
                     {% if field == column %}
 
-                        <th><a href="{% url 'error:sorting' field direction %}">{{ field }} <i
+                        <th><a style="color: white; font-size: 13px;" href="{% url 'error:sorting' field direction %}">{{ field }} <i
                                 class="{{ icon }}"></i></a></th>
                     {% else %}
                         {% if field == "created_by"%}
@@ -49,7 +49,7 @@
 
             {% for error in all_errors %}
                 <tr data-toggle="collapse" data-target="#error{{ error.id }}" class="accordion-toggle"
-                        {% if error.issue_id == 'TBD' %} style="background: #ffe8b4" {% endif %}>
+                        {% if error.issue_id == 'TBD' %} style="background: #ffe8b4; " {% endif %}>
 
                     {% for name, value in error.get_fields %}
                         {% if name == 'issue_id' %}
@@ -58,6 +58,8 @@
                             {% else %}
                                 <td><a href="{{ value }}">{{ error.parse_url_address_to_issue_id }}</a></td>
                             {% endif %}
+                        {% elif name == 'jenkins_path' %}
+                            <td><a href="{{ value }}">[link]</a></td>
                         {% elif name == 'created_by' %}
                             {% if user.is_authenticated %}
                                 <td>{{ value }}</td>
@@ -78,7 +80,7 @@
                     {% endif %}
 
                 </tr>
-                <tr>
+                <tr style="padding: 0 !important; border: 0 !important;">
                     {% if user.is_authenticated %}
 
                         <td colspan="18" class="hiddenRow">
