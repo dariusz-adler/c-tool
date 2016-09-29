@@ -38,10 +38,10 @@
                                             {% if value == 'TBD' %}
                                                 {{ name }} : {{ value }} </br></br>
                                             {% else %}
-                                                {{ name }} : <a href="{{ value }}">{{ value }}</a> </br></br>
+                                                {{ name }} : <a href="{{ value }}" target="_blank">{{ value }}</a> </br></br>
                                             {% endif %}
                                         {% elif name == 'jenkins_path' %}
-                                            {{ name }} : <a href="{{ value }}">{{ value }}</a> </br></br>
+                                            {{ name }} : <a href="{{ value }}" target="_blank">{{ value }}</a> </br></br>
                                         {% elif name == 'created_by' %}
                                             {% if user.is_authenticated %}
                                                 {{ name }} : {{ value }} </br></br>
