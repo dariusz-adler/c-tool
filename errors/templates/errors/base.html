@@ -8,29 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-    $(function() {
-        $(".trigger").click(function(){
-            $("#datepicker").datepicker({dateFormat: 'yy-mm-dd'});
-            $("#datepicker").datepicker("show");
-        });
-        $("#datepicker").change(function (){
-            $(".trigger").html("<input id='id_date' name='date' type='text' value='" + $("#datepicker").val() + "' required='' data-dpmaxz-eid='13'>");
-        });
-        $(".environment").change(function () {
-            if ($(".environment").val() == 'hibiscus') {
-                $(".scriptlabel").html("<input style='background-color: #DCDCDC;' id='id_script_label' name='script_label' type='text' value='' requierd='' readonly data-dpmaxz-eid='11'>");
-            }
-            if ($(".environment").val() == 'ufte') {
-                $(".scriptlabel").html("<input id='id_script_label' name='script_label' type='text' data-dpmaxz-eid='11'>");
-            }
-        })
-    });
-    </script>
+    {% include 'errors/scripts.html' %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'errors/style.css' %}" />
 </head>
