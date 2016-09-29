@@ -21,6 +21,14 @@
         $("#datepicker").change(function (){
             $(".trigger").html("<input id='id_date' name='date' type='text' value='" + $("#datepicker").val() + "' required='' data-dpmaxz-eid='13'>");
         });
+        $(".environment").change(function () {
+            if ($(".environment").val() == 'hibiscus') {
+                $(".scriptlabel").html("<input style='background-color: #DCDCDC;' id='id_script_label' name='script_label' type='text' value='' requierd='' readonly data-dpmaxz-eid='11'>");
+            }
+            if ($(".environment").val() == 'ufte') {
+                $(".scriptlabel").html("<input id='id_script_label' name='script_label' type='text' data-dpmaxz-eid='11'>");
+            }
+        })
     });
     </script>
 

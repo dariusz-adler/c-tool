@@ -36,7 +36,7 @@ def get_errors_from_session(request):
 def index(request):
     all_errors_list = Error.objects.order_by('-id')
     post_errors_to_session(request, all_errors_list)
-    paginator = Paginator(all_errors_list, 15)
+    paginator = Paginator(all_errors_list, 50)
     page = request.GET.get('page')
     try:
         all_errors = paginator.page(page)
@@ -101,7 +101,7 @@ def sorting(request, column, direction):
 
     post_errors_to_session(request, sorted_errors)
 
-    paginator = Paginator(sorted_errors, 15)
+    paginator = Paginator(sorted_errors, 50)
     page = request.GET.get('page')
 
     try:

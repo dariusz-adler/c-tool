@@ -20,6 +20,8 @@ class ErrorForm(forms.ModelForm):
     script_label = forms.CharField(required=False)
     jenkins_path = forms.CharField(required=False)
     env_version = forms.CharField(required=False)
+    test_environment = forms.ChoiceField(choices=[('', ''), ('ufte', 'ufte'), ('hibiscus', 'hibiscus')],
+                                         widget=forms.Select(attrs={'class': 'environment'}))
 
     class Meta:
         model = Error
@@ -35,6 +37,8 @@ class EditErrorForm(forms.ModelForm):
     script_label = forms.CharField(required=False)
     jenkins_path = forms.CharField(required=False)
     env_version = forms.CharField(required=False)
+    test_environment = forms.ChoiceField(choices=[('', ''), ('ufte', 'ufte'), ('hibiscus', 'hibiscus')],
+                                         widget=forms.Select(attrs={'class': 'environment'}))
 
     class Meta:
         model = Error
