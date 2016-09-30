@@ -116,6 +116,8 @@ class Error(models.Model):
         if matcher:
             return 'TBD'
 
+        return self.issue_id
+
     def parse_url_address_to_issue_id(self):
         pattern = r'.*eriref=([A-Z]{2}\d{5})'
         matcher = re.match(pattern, self.issue_id)
@@ -140,6 +142,8 @@ class Error(models.Model):
 
         if matcher:
             return 'TBD'
+
+        return self.issue_id
 
 
 class UserComment(models.Model):

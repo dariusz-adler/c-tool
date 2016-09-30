@@ -246,7 +246,7 @@ def update_error(request, error_id):
             messages.success(request, 'Error with id {} has beed updated'.format(error.id))
             return HttpResponseRedirect('/details/{}'.format(error_id))
         else:
-            messages.warning(request, 'No support for this issue_id')
+            messages.warning(request, 'No support for one or more fields')
 
     context = {
         'error': error,
