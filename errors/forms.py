@@ -9,14 +9,14 @@ def validate_issue_id(value):
                     r'^TWOGSIMCS-\d+$', r'^[A-Z]{2}\d{5}$', r'^[A-Z]{3}-[A-Z]{2}-\d+$', r'^TBD$']
 
     if not any(re.match(pattern, value) for pattern in pattern_list):
-        raise ValidationError('%(value)s is not appropriate issue_id', params={'value': value})
+        raise ValidationError('No support for such issue_id (%(value)s)', params={'value': value})
 
 
 def validate_jenkins_path(value):
     pattern_list = [r'^https://']
 
     if not any(re.match(pattern, value) for pattern in pattern_list):
-        raise ValidationError('%(value)s is not appropriate jenkins_path', params={'value': value})
+        raise ValidationError('No support for such jenkins_path (%(value)s)', params={'value': value})
 
 
 class ErrorForm(forms.ModelForm):

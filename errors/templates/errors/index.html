@@ -59,7 +59,11 @@
                                 <td><a href="{{ value }}" target="_blank">{{ error.parse_url_address_to_issue_id }}</a></td>
                             {% endif %}
                         {% elif name == 'jenkins_path' %}
-                            <td><a href="{{ value }}" target="_blank">[link]</a></td>
+                            {% if value == '' %}
+                                <td></td>
+                            {% else %}
+                                <td><a href="{{ value }}" target="_blank">[link]</a></td>
+                            {% endif %}
                         {% elif name == 'created_by' %}
                             {% if user.is_authenticated %}
                                 <td>{{ value }}</td>
