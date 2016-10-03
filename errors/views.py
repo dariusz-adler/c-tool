@@ -47,7 +47,7 @@ def index(request):
     query = request.GET.get("q")
     if query:
         fields = ['created_by', 'slogan', 'issue_id', 'error_code', 'config_id', 'software_label', 'tc_number', 'suite',
-                  'script_label', 'jenkins_path', 'test_environment', 'fault_area','state', 'env_version']
+                  'script_label', 'date', 'jenkins_path', 'test_environment', 'fault_area', 'state', 'env_version']
         values = []
         for i in range(len(fields)):
             values.append(query)
