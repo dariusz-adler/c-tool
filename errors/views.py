@@ -1,7 +1,5 @@
-from .forms import ErrorForm, UserCommentForm, EditErrorForm, HistoryForm
-from django.shortcuts import get_object_or_404
-from .forms import SearchForm
-from django.shortcuts import render
+from .forms import ErrorForm, UserCommentForm, EditErrorForm, HistoryForm, SearchForm
+from django.shortcuts import get_object_or_404, render
 from .models import Error
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -14,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from ctool import settings
 from django.core import serializers
 from copy import deepcopy
+from django.contrib.auth.models import User
 
 
 def post_errors_to_session(request, errors):
@@ -32,8 +31,26 @@ def get_errors_from_session(request):
 
     return errors
 
+@login_required
+def change_password(request):
+    next = request.GET.get('next', 'change_password/')
+    if request.method == "POST":
+        old_pass = request.POST['old_password']
+        new_pass = request.POST['new_password']
+        new_pass_repeat = request.POST['new_password_repeat']
+        user = User.objects.get(username__exact=request.user)
+        if user.check_password(old_pass) and new_pass == new_pass_repeat:
+            user.set_password(new_pass)
+            user.save()
+            messages.success(request, 'Password has been changed')
+            return HttpResponseRedirect('/index/')
+
+
+
+    return render(request, "errors/change_password.html", {'redirect_to': next, 'current_user': request.user,},)
 
 def index(request):
+    current_user = request.user
     all_errors_list = Error.objects.order_by('-id')
     post_errors_to_session(request, all_errors_list)
     paginator = Paginator(all_errors_list, 50)
@@ -55,7 +72,7 @@ def index(request):
         return query_result
     else:
         context = {'all_errors': all_errors,
-                   'fields': Error().get_fields()}
+                   'fields': Error().get_fields(),'current_user':current_user}
 
     return render(request, 'errors/index.html', context)
 
