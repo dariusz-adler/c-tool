@@ -54,22 +54,22 @@
                     {% for name, value in error.get_fields %}
                         {% if name == 'issue_id' %}
                             {% if value == 'TBD' %}
-                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ error.parse_url_address_to_issue_id }}</td>
+                                <td title="{{ error.parse_url_address_to_issue_id }}" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ error.parse_url_address_to_issue_id }}</td>
                             {% else %}
-                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{{ value }}" target="_blank">{{ error.parse_url_address_to_issue_id }}</a></td>
+                                <td title="{{ error.parse_url_address_to_issue_id }}" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{{ value }}" target="_blank">{{ error.parse_url_address_to_issue_id }}</a></td>
                             {% endif %}
                         {% elif name == 'jenkins_path' %}
                             {% if value == '' %}
-                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></td>
+                                <td title="" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></td>
                             {% else %}
-                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{{ value }}" target="_blank">[link]</a></td>
+                                <td title="{{ value }}" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{{ value }}" target="_blank">[link]</a></td>
                             {% endif %}
                         {% elif name == 'created_by' %}
                             {% if user.is_authenticated %}
-                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ value }}</td>
+                                <td title="{{ value }}" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ value }}</td>
                             {% endif %}
                         {% else %}
-                            <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ value }}</td>
+                            <td title="{{ value }}" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ value }}</td>
                         {% endif %}
                     {% endfor %}
 
