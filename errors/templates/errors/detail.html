@@ -21,7 +21,7 @@
         <!-- FOR LOGGED USER -->
         {% if user.is_authenticated %}
             <div class="row">
-                <div class="col-md-offset-0 col-md-4">
+                <div class="col-md-4">
 
                     <div class="panel panel-default">
 
@@ -31,7 +31,7 @@
 
                         <div class="panel-body" style="background-color: lightgray;">
 
-                            <div class="form-group">
+                            <div class="form-group" style="word-break:break-all;">
                                 {% for name, value in error.get_fields %}
                                     {% if value %}
                                         {% if name == 'issue_id' %}
@@ -82,7 +82,7 @@
 
                         <!-- body -->
                         <div class="panel-body" style="background-color: lightgray; max-height: 660px;overflow-y: scroll;">
-                            <div class="form-group">
+                            <div class="form-group" style="word-break:break-all;">
                                 {% for comment in all_comments %}<br/><br/>
                                     {{ comment.user_comment }}<br/>
                                     <p style="font-weight: 700; font-size: smaller;">{{ comment.date }}, {{ comment.time }}, {{ comment.user }}</p>
@@ -105,7 +105,7 @@
 
                         <!-- body -->
                         <div class="panel-body" style="background-color: lightgray; max-height: 660px;overflow-y: scroll;">
-                            <div class="form-group">
+                            <div class="form-group" style="word-break:break-all;">
                                 {% for record in all_history %}<br/><br/>
                                     {{ record.history_record }}<br/>
                                     <p style="font-weight: 700; font-size: smaller;">{{ record.date }}, {{ record.time }}, {{ record.user }}</p>
@@ -128,7 +128,7 @@
                         <h3 style="text-align: center">DETAILS FOR ERROR ID: {{ error.id }}</h3>
                     </div>
                     <div class="panel-body" style="background-color: lightgray;">
-                        <div class="form-group">
+                        <div class="form-group" style="word-break:break-all;">
                             {% for name, value in error.get_fields %}
                                 {% if value %}
                                     {% if name == 'issue_id' %}
