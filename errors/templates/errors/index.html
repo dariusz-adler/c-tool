@@ -25,17 +25,17 @@
                 {% for field, _ in fields %}
                     {% if field == column %}
 
-                        <th><a href="{% url 'error:sorting' field direction %}" style="color: white;">{{ field }} <i
+                        <th title="{{ field }}" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{% url 'error:sorting' field direction %}" style="color: white;">{{ field }} <i
                                 class="{{ icon }}"></i></a></th>
                     {% else %}
                         {% if field == "created_by"%}
                             {% if user.is_authenticated %}
-                                <th><a href="{% url 'error:sorting' field 'asc' %}" style="color: white;">{{ field }} <i
+                                <th title="{{ field }}" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{% url 'error:sorting' field 'asc' %}" style="color: white;">{{ field }} <i
                                         class="fa fa-sort"></i></a>
                                 </th>
                             {% endif %}
                             {% else %}
-                             <th><a href="{% url 'error:sorting' field 'asc' %}" style="color: white;">{{ field }} <i
+                             <th title="{{ field }}" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{% url 'error:sorting' field 'asc' %}" style="color: white;">{{ field }} <i
                                         class="fa fa-sort"></i></a>
                                 </th>
                         {% endif %}
