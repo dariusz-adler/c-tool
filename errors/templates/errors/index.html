@@ -54,30 +54,30 @@
                     {% for name, value in error.get_fields %}
                         {% if name == 'issue_id' %}
                             {% if value == 'TBD' %}
-                                <td>{{ error.parse_url_address_to_issue_id }}</td>
+                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ error.parse_url_address_to_issue_id }}</td>
                             {% else %}
-                                <td><a href="{{ value }}" target="_blank">{{ error.parse_url_address_to_issue_id }}</a></td>
+                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{{ value }}" target="_blank">{{ error.parse_url_address_to_issue_id }}</a></td>
                             {% endif %}
                         {% elif name == 'jenkins_path' %}
                             {% if value == '' %}
-                                <td></td>
+                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></td>
                             {% else %}
-                                <td><a href="{{ value }}" target="_blank">[link]</a></td>
+                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{{ value }}" target="_blank">[link]</a></td>
                             {% endif %}
                         {% elif name == 'created_by' %}
                             {% if user.is_authenticated %}
-                                <td>{{ value }}</td>
+                                <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ value }}</td>
                             {% endif %}
                         {% else %}
-                            <td>{{ value }}</td>
+                            <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ value }}</td>
                         {% endif %}
                     {% endfor %}
 
                     {% if user.is_authenticated %}
-                        <td><a href="{% url 'error:create_copy' error.id %}" class="btn btn-default btn-md"
+                        <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{% url 'error:create_copy' error.id %}" class="btn btn-default btn-md"
                                role="button">Create copy</a></td>
 
-                        <td><a href="{% url 'error:update' error.id %}" class="btn btn-primary btn-md" role="button">
+                        <td style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="{% url 'error:update' error.id %}" class="btn btn-primary btn-md" role="button">
                             <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Edit</a>
                         </td>
 
