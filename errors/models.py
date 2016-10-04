@@ -28,7 +28,7 @@ class Error(models.Model):
                              choices=[('in progress', 'in progress'), ('frozen', 'frozen'), ('solved', 'solved')],
                              null=False)
 
-    comment = models.TextField(max_length=1000)
+    comment = models.CharField(max_length=500)
     env_version = models.CharField(max_length=100)
     created_by = models.CharField(max_length=200)
     change_description = models.TextField(max_length=1000)

@@ -31,26 +31,30 @@ def get_errors_from_session(request):
 
     return errors
 
+
 @login_required
 def change_password(request):
-    next = request.GET.get('next', 'change_password/')
     if request.method == "POST":
         old_pass = request.POST['old_password']
         new_pass = request.POST['new_password']
         new_pass_repeat = request.POST['new_password_repeat']
         user = User.objects.get(username__exact=request.user)
+        if new_pass != new_pass_repeat:
+            messages.warning(request, 'New password fields are different! ')
+        if not user.check_password(old_pass):
+            messages.warning(request, 'Old password is wrong')
         if user.check_password(old_pass) and new_pass == new_pass_repeat:
             user.set_password(new_pass)
             user.save()
+            user = authenticate(username=request.user, password=new_pass)
+            auth.login(request, user)
             messages.success(request, 'Password has been changed')
-            return HttpResponseRedirect('/index/')
+            return HttpResponseRedirect(reverse('error:index'))
 
+    return render(request, 'errors/change_password.html')
 
-
-    return render(request, "errors/change_password.html", {'redirect_to': next, 'current_user': request.user,},)
 
 def index(request):
-    current_user = request.user
     all_errors_list = Error.objects.order_by('-id')
     post_errors_to_session(request, all_errors_list)
     paginator = Paginator(all_errors_list, 50)
@@ -72,7 +76,7 @@ def index(request):
         return query_result
     else:
         context = {'all_errors': all_errors,
-                   'fields': Error().get_fields(),'current_user':current_user}
+                   'fields': Error().get_fields(),}
 
     return render(request, 'errors/index.html', context)
 
@@ -96,7 +100,6 @@ def detail(request, error_id):
                'form': form,
                'all_comments': all_comments,
                'all_history': all_history,}
-
 
     return render(request, 'errors/detail.html', context)
 
@@ -154,7 +157,7 @@ def add_error(request):
     else:
         form = ErrorForm()
     return render(request, 'errors/error_form.html', {'form': form, 'button_role': button_role,
-                                                      'window_role': window_role})
+                                                      'window_role': window_role,})
 
 
 def create_copy(request, error_id):
@@ -211,7 +214,7 @@ def advanced_search(request):
     else:
         form = SearchForm()
         return render(request, 'errors/error_form.html', {'form': form, 'window_role': window_role,
-                                                          'button_role': button_role})
+                                                          'button_role': button_role,})
 
 
 def dynamic_query(request, model, fields, values, operator):
@@ -233,13 +236,13 @@ def dynamic_query(request, model, fields, values, operator):
             errors = model.objects.filter(q)
             post_errors_to_session(request, errors)
             context = {'all_errors': errors,
-                       'fields': Error().get_fields()}
+                       'fields': Error().get_fields(),}
             return render(request, 'errors/index.html', context)
     else:
         all_errors = model.objects.all()
         post_errors_to_session(request, all_errors)
         context = {'all_errors': all_errors,
-                   'fields': Error().get_fields()}
+                   'fields': Error().get_fields(),}
         return render(request, 'errors/index.html', context)
 
 
@@ -294,4 +297,4 @@ def login_user(request):
 
 def logout_user(request):
     auth.logout(request)
-    return HttpResponseRedirect(settings.LOGIN_URL)
+    return HttpResponseRedirect(reverse('error:index'))

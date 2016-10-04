@@ -81,7 +81,7 @@
                         </div>
 
                         <!-- body -->
-                        <div class="panel-body" style="background-color: lightgray;">
+                        <div class="panel-body" style="background-color: lightgray; max-height: 660px;overflow-y: scroll;">
                             <div class="form-group">
                                 {% for comment in all_comments %}<br/><br/>
                                     {{ comment.user_comment }}<br/>
@@ -104,7 +104,7 @@
                         </div>
 
                         <!-- body -->
-                        <div class="panel-body" style="background-color: lightgray;">
+                        <div class="panel-body" style="background-color: lightgray; max-height: 660px;overflow-y: scroll;">
                             <div class="form-group">
                                 {% for record in all_history %}<br/><br/>
                                     {{ record.history_record }}<br/>

@@ -20,7 +20,8 @@ def validate_jenkins_path(value):
 
 
 class ErrorForm(forms.ModelForm):
-
+    slogan = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows':5, 'cols':50, 'style':'resize:none;'}))
+    comment = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows':5, 'cols':50, 'style':'resize:none;'}))
     issue_id = forms.CharField(validators=[validate_issue_id])
     error_code = forms.CharField(required=False)
     suite = forms.CharField(required=False)
@@ -37,7 +38,7 @@ class ErrorForm(forms.ModelForm):
                   'env_version']
 
 class EditErrorForm(forms.ModelForm):
-
+    slogan = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows':5, 'cols':50, 'style':'resize:none;'}))
     issue_id = forms.CharField(validators=[validate_issue_id])
     error_code = forms.CharField(required=False)
     suite = forms.CharField(required=False)
@@ -54,6 +55,7 @@ class EditErrorForm(forms.ModelForm):
 
 
 class SearchForm(forms.ModelForm):
+
     slogan = forms.CharField(required=False)
     issue_id = forms.CharField(required=False)
     error_code = forms.CharField(required=False)
